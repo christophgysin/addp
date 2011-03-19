@@ -35,6 +35,19 @@ public:
         return socket.send_to(boost::asio::buffer(packet), endpoint);
     }
 
+    size_t receive()
+    {
+        boost::asio::ip::udp::endpoint sender_endpoint;
+        boost::array<char, 1024> recv_buf;
+        size_t len = socket.receive_from(
+                boost::asio::buffer(recv_buf), sender_endpoint);
+
+        std::cout << sender_endpoint;
+        std::cout.write(recv_buf.data(), len);
+
+        return len;
+    }
+
 private:
     boost::asio::io_service io_service;
     boost::asio::ip::address address;
@@ -57,13 +70,10 @@ int main(int argc, char* argv[])
         std::cout << std::setfill('0') << std::setw(2) << int(byte);
     std::cout << std::endl;
 
-    /*
-    boost::array<char, 128> recv_buf;
-    udp::endpoint sender_endpoint;
-    size_t len = socket.receive_from(
-        boost::asio::buffer(recv_buf), sender_endpoint);
-    std::cout.write(recv_buf.data(), len);
-    */
+    while(true)
+    {
+        socket.receive();
+    }
 
     return 0;
 }
