@@ -20,9 +20,6 @@ discover_request = addp/"DIGI\x00\x01\x00\x06\xff\xff\xff\xff\xff\xff"
 def print_packet(x):
     #print x.display()
 
-    switch(
-            str(x[Raw])[5] ,
-
     return '{0}: type: {1}, raw:'.format(
             x.sprintf("%IP.src%:"),
             repr(x[Raw].load)
