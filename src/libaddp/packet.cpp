@@ -1,6 +1,8 @@
 #include <cstring>
 #include <packet.h>
 
+#include <iostream>
+
 namespace addp {
 
 const char* packet::MAGIC = "DIGI";
@@ -17,7 +19,7 @@ packet::packet(packet::packet_type type)
 packet::packet(uint8_t* data, size_t len)
 {
     // header
-    memcpy(&_header, data, sizeof(packet_type));
+    memcpy(&_header, data, sizeof(packet_header));
 
     // payload
     _payload.clear();
@@ -102,20 +104,30 @@ std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
     switch(packet.type())
     {
         case addp::packet::PT_DISCOVERY_REQUEST:
+        {
             os << std::hex << std::setfill('0');
 
-            BOOST_FOREACH(uint8_t b, packet.payload())
-                os << ":" << int(b);
+            std::vector<uint8_t> payload = packet.payload();
+            for(size_t i=0; i<payload.size(); ++i)
+                os << (i ? ":" : " ") << int(payload[i]);
             break;
+        }
 
         default:
             break;
     }
 
-    os << " (";
+    /*
+    os << std::endl;
+    os << "raw():" << std::endl;
     BOOST_FOREACH(uint8_t b, packet.raw())
         os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
-    os << ")";
+    os << std::endl << std::endl;
+    os << "payload():";
+    BOOST_FOREACH(uint8_t b, packet.payload())
+        os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
+    os << std::endl;
+    */
 
     return os;
 }

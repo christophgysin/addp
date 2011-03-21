@@ -1,8 +1,12 @@
+#include <cctype>
 #include <iostream>
+#include <iomanip>
+#include <boost/foreach.hpp>
+
 #include <addp.h>
+#include <udp_socket.h>
 
 #include "addp_options.h"
-#include "udp_socket.h"
 
 class addpc {
 public:
@@ -25,19 +29,29 @@ int main(int argc, char* argv[])
 
     udp_socket socket(options.host(), options.port());
 
-    std::vector<uint8_t> packet = addp::discovery_request();
-    socket.send(packet);
+    addp::discovery_request request;
+
+    if(options.verbose())
+        std::cout << "sending packet: " << request << std::endl;
+
+    socket.send(request.raw());
 
     while(true)
     {
         boost::asio::ip::udp::endpoint sender;
-        boost::array<char, 1024> buffer;
+        boost::array<uint8_t, 1024> buffer;
         size_t len = socket.receive(sender, boost::asio::buffer(buffer));
 
-        std::cout << sender << " ";
-        std::cout.write(buffer.data(), len);
-        std::cout << std::endl;
-    }
+        addp::packet response(buffer.data(), len);
 
+        //if(options.verbose())
+        std::cout << sender << " " << response << std::endl;
+        /*
+        BOOST_FOREACH(uint8_t b, buffer)
+            std::cout << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
+        std::cout << std::endl;
+        */
+
+    }
     return 0;
 }
