@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 2.6)
 project(addp)
 
-include(FindBoost)
-find_package(Boost REQUIRED system program_options)
+include(cmake/dependencies.cmake)
+include(cmake/version.cmake)
+include(cmake/packaging.cmake)
+
+message("libaddp version: " ${LIBADDP_VERSION})
+message("addpc version:   " ${ADDPC_VERSION})
+message("addpd version:   " ${ADDPD_VERSION})
 
 set(CMAKE_INSTALL_PREFIX /usr)
 set(CMAKE_BUILD_TYPE Release)

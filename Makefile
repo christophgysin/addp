@@ -1,6 +1,6 @@
 B = bin
 T = addp addpc addpd
-E = install
+E = package install
 
 all: config $(T)
 
