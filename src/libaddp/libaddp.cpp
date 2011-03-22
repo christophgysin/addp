@@ -1,10 +1,11 @@
 #include <string>
+#include "version.h"
 
 namespace addp {
 
 std::string version()
 {
-    return "0.1";
+    return LIBADDP_VERSION;
 }
 
 } // namespace addp
