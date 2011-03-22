@@ -1,35 +1,41 @@
 #include "field.h"
 
 #include <cstring>
+#include <iostream>
+#include <iomanip>
+#include <boost/foreach.hpp>
+#include <boost/format.hpp>
 
 namespace addp {
-
-field::field()
-{
-}
 
 field::field(field::field_type type)
 {
     _header.type = htons(type);
 }
 
-field::field(uint8_t* data, size_t len)
+field::field(std::vector<uint8_t>::iterator& iter, const std::vector<uint8_t>::iterator& end)
 {
     // header
-    memcpy(&_header, data, std::min(sizeof(field_header), len));
+    copy(iter, iter+sizeof(field_header), reinterpret_cast<uint8_t*>(&_header));
+    std::advance(iter, sizeof(field_header));
 
     // payload
-    if(len > sizeof(field_header))
-    {
-        _payload.clear();
-        _payload.reserve(len - sizeof(field_type));
-        copy(data+sizeof(field_type), data+len, back_inserter(_payload));
-    }
+    _payload.clear();
+    copy(iter, iter+_header.size, back_inserter(_payload));
+    std::advance(iter, _header.size);
+}
+
+bool field::check() const
+{
+    if(_payload.size() != _header.size)
+        return false;
+
+    return true;
 }
 
 field::field_type field::type() const
 {
-    return static_cast<field::field_type>(ntohs(_header.type));
+    return static_cast<field::field_type>(_header.type);
 }
 
 size_t field::size() const
@@ -107,7 +113,7 @@ std::string addp::field::field_type2str(field_type type)
         case FT_VENDOR:
             return "vendor GUID";
     };
-    return "Unknown";
+    return str(boost::format("Unknown (0x%02x)") % type);
 }
 
 template<typename T>
@@ -121,7 +127,22 @@ T field::value()
 
 std::ostream& operator<<(std::ostream& os, const addp::field& field)
 {
-    os << addp::field::field_type2str(field.type());
+#ifdef ADDP_FIELD_DEBUG
+    os << std::endl;
+    os << "field raw():" << std::endl;
+    BOOST_FOREACH(uint8_t b, field.raw())
+        os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
+    os << std::endl;
+    os << "field payload():";
+    BOOST_FOREACH(uint8_t b, field.payload())
+        os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
+    os << std::endl;
+#endif // ADDP_FIELD_DEBUG
+
+    os << addp::field::field_type2str(field.type()) << " =";
+
+    BOOST_FOREACH(uint8_t b, field.payload())
+        os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
 
     return os;
 }

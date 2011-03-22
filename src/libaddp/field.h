@@ -68,10 +68,10 @@ public:
         BF_TRUE = 0x01,
     };
 
-    field();
     field(field_type t);
-    field(uint8_t* data, size_t len);
+    field(std::vector<uint8_t>::iterator& iter, const std::vector<uint8_t>::iterator& end);
 
+    bool check() const;
     field_type type() const;
     size_t size() const;
     const std::vector<uint8_t>& payload() const;

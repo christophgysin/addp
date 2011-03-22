@@ -1,15 +1,16 @@
-#include <packet.h>
+#include "packet.h"
 
 #include <cstring>
 #include <iostream>
+#include <vector>
+#include <iterator>
+#include <algorithm>
+#include <boost/foreach.hpp>
+#include <boost/format.hpp>
 
 namespace addp {
 
 const char* packet::MAGIC = "DIGI";
-
-packet::packet()
-{
-}
 
 packet::packet(packet::packet_type type)
 {
@@ -30,7 +31,7 @@ packet::packet(uint8_t* data, size_t len)
     }
 }
 
-bool packet::check()
+bool packet::check() const
 {
     if(_payload.size() != _header.size)
         return false;
@@ -64,6 +65,34 @@ std::vector<uint8_t> packet::raw() const
     return buffer;
 }
 
+bool packet::parse_fields()
+{
+    std::vector<uint8_t>::iterator iter = _payload.begin();
+    const std::vector<uint8_t>::iterator end = _payload.end();
+
+    while(static_cast<size_t>(std::distance(iter, end)) > sizeof(field::field_header))
+    {
+        field f(iter, end);
+
+        if(!f.check())
+            return false;
+
+        _fields.push_back(f);
+    }
+
+    return std::distance(iter, end) == 0;
+}
+
+const std::vector<field>& packet::fields() const
+{
+    /*
+    if(fields.empty() && !payload.empty())
+        parse_fields();
+    */
+
+    return _fields;
+}
+
 std::string addp::packet::packet_type2str(packet_type type)
 {
     switch(type)
@@ -87,15 +116,7 @@ std::string addp::packet::packet_type2str(packet_type type)
         case PT_DHCP_NET_CONFIG_REPONSE:
             return "DHCP Net Config Response";
     };
-    return "Unknown";
-}
-
-/* discovery request */
-
-discovery_request::discovery_request(const uint64_t mac_addr) :
-    packet(addp::packet::PT_DISCOVERY_REQUEST)
-{
-    add_raw(reinterpret_cast<const uint8_t*>(&mac_addr), 6);
+    return str(boost::format("Unknown (0x%02x)") % type);
 }
 
 } // namespace addp
@@ -103,6 +124,21 @@ discovery_request::discovery_request(const uint64_t mac_addr) :
 std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
 {
     os << addp::packet::packet_type2str(packet.type());
+
+#ifdef ADDP_PACKET_DEBUG
+    os << std::endl;
+    os << "packet raw():" << std::endl;
+    BOOST_FOREACH(uint8_t b, packet.raw())
+        os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
+    os << std::endl << std::endl;
+    os << "packet payload():";
+    BOOST_FOREACH(uint8_t b, packet.payload())
+        os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
+    os << std::endl;
+#endif // ADDP_PACKET_DEBUG
+
+    BOOST_FOREACH(const addp::field& f, packet.fields())
+        os << " " << f;
 
     switch(packet.type())
     {
@@ -119,18 +155,6 @@ std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
         default:
             break;
     }
-
-    /*
-    os << std::endl;
-    os << "raw():" << std::endl;
-    BOOST_FOREACH(uint8_t b, packet.raw())
-        os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
-    os << std::endl << std::endl;
-    os << "payload():";
-    BOOST_FOREACH(uint8_t b, packet.payload())
-        os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
-    os << std::endl;
-    */
 
     return os;
 }

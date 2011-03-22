@@ -3,17 +3,19 @@
 #include <iomanip>
 #include <boost/foreach.hpp>
 
-#include "addp.h"
-#include "udp_socket.h"
-#include "packet.h"
+#include <addp.h>
+#include <udp_socket.h>
+#include <packet.h>
+#include <packets.h>
 
+#include "version.h"
 #include "addp_options.h"
 
 class addpc {
 public:
     static std::string version()
     {
-        return "0.1";
+        return ADDPC_VERSION;
     }
 };
 
@@ -30,11 +32,10 @@ int main(int argc, char* argv[])
 
     udp_socket socket(options.host(), options.port());
 
+    // send discovery request
     addp::discovery_request request;
-
     if(options.verbose())
         std::cout << "sending packet: " << request << std::endl;
-
     socket.send(request.raw());
 
     while(true)
@@ -45,8 +46,11 @@ int main(int argc, char* argv[])
 
         addp::packet response(buffer.data(), len);
 
-        //if(options.verbose())
+        if(!response.parse_fields())
+            std::cerr << "failed to parse fields!" << std::endl;
+
         std::cout << sender << " " << response << std::endl;
+
         /*
         BOOST_FOREACH(uint8_t b, buffer)
             std::cout << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
