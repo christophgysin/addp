@@ -2,6 +2,7 @@
 #define ADDP_TYPES_H
 
 #include <stdint.h>
+#include <cstring>
 #include <ostream>
 
 namespace addp {
@@ -9,19 +10,30 @@ namespace addp {
 struct ip_address
 {
     static const size_t len = 4;
-    uint32_t addr;
+    uint32_t data;
 };
+std::ostream& operator<<(std::ostream& os, const addp::ip_address& ip_addr);
 
 struct mac_address
 {
+    mac_address() {};
+    mac_address(uint64_t mac_addr) : data(mac_addr) {};
+
     static const size_t len = 6;
-    uint64_t addr;
-    mac_address(uint64_t mac_addr) : addr(mac_addr) {};
+    uint64_t data;
 };
+std::ostream& operator<<(std::ostream& os, const addp::mac_address& mac_addr);
+
+struct guid
+{
+    guid() {};
+    guid(uint8_t* p) { memcpy(data, p, len); };
+
+    static const size_t len = 16;
+    uint8_t data[len];
+};
+std::ostream& operator<<(std::ostream& os, const addp::guid& guid);
 
 } // namespace addp
-
-std::ostream& operator<<(std::ostream& os, const addp::mac_address& mac_addr);
-std::ostream& operator<<(std::ostream& os, const addp::ip_address& ip_addr);
 
 #endif // ADDP_TYPES_H

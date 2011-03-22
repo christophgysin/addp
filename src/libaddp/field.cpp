@@ -71,7 +71,7 @@ std::string addp::field::field_type2str(field_type type)
     switch(type)
     {
         case FT_NONE:
-            return "none";
+            return "None";
         case FT_MAC_ADDR:
             return "MAC address";
         case FT_IP_ADDR:
@@ -91,31 +91,71 @@ std::string addp::field::field_type2str(field_type type)
         case FT_RESULT_MSG:
             return "Result message";
         case FT_RESULT_FLAG:
-            return "1 byte result flag";
+            return "Result flag";
         case FT_GATEWAY:
             return "Gateway IP";
         case FT_CONF_ERR_CODE:
-            return "2 byte configuration error code";
+            return "Configuration error code";
         case FT_DEVICE_NAME:
             return "Device name";
         case FT_PORT:
-            return "4 byte port";
+            return "Port";
         case FT_DNS:
             return "DNS IP";
         case FT_DCHP:
             return "DHCP enabled";
         case FT_ERR_CODE:
-            return "1 byte error code";
+            return "Error code";
         case FT_SERIAL_COUNT:
-            return "1 byte serial port count";
+            return "Serial port count";
         case FT_SSL_PORT:
-            return "4 byte encrypted port";
+            return "Encrypted port";
         case FT_VERSION:
-            return "version ID";
+            return "Version ID";
         case FT_VENDOR:
-            return "vendor GUID";
+            return "Vendor GUID";
     };
-    return str(boost::format("unknown (0x%02x)") % type);
+    return str(boost::format("Unknown (0x%02x)") % type);
+}
+
+std::string addp::field::error_code2str(error_code code)
+{
+    switch(code)
+    {
+        case EC_SUCCESS:
+            return "Success";
+        case EC_AUTH:
+            return "Auth";
+        case EC_INVALID:
+            return "Invalid";
+        case EC_SAVE:
+            return "Save";
+    }
+    return str(boost::format("Unknown (0x%02x)") % code);
+}
+
+std::string addp::field::result_flag2str(result_flag flag)
+{
+    switch(flag)
+    {
+        case RF_SUCCESS:
+            return "Success";
+        case RF_ERROR:
+            return "Error";
+    }
+    return str(boost::format("Unknown (0x%02x)") % flag);
+}
+
+std::string addp::field::config_error2str(config_error error)
+{
+    switch(error)
+    {
+        case CE_SUCCESS:
+            return "SUCCESS";
+        case CE_ERROR:
+            return "Error"; // Digi in different subnet than sender
+    }
+    return str(boost::format("Unknown (0x%02x)") % error);
 }
 
 template<>
@@ -151,28 +191,29 @@ std::string field::value() const
 }
 
 template<>
-mac_address field::value() const
+field::config_error field::value() const
 {
-    mac_address mac_addr(0);
-    if(_payload.size() == 6)
-        copy(_payload.begin(), _payload.end(), reinterpret_cast<uint8_t*>(&mac_addr.addr));
-    return mac_addr;
+    return static_cast<field::config_error>(value<uint16_t>());
 }
 
 template<>
-ip_address field::value() const
+field::error_code field::value() const
 {
-    ip_address ip_addr;
-    if(_payload.size() == 4)
-        copy(_payload.begin(), _payload.end(), reinterpret_cast<uint8_t*>(&ip_addr.addr));
-    return ip_addr;
+    return static_cast<field::error_code>(value<uint8_t>());
+}
+
+template<>
+field::result_flag field::value() const
+{
+    return static_cast<field::result_flag>(value<uint8_t>());
 }
 
 template<typename T>
 T field::value() const
 {
     T t;
-
+    if(_payload.size() == T::len)
+        copy(_payload.begin(), _payload.end(), reinterpret_cast<uint8_t*>(&t.data));
     return t;
 }
 
@@ -200,12 +241,17 @@ std::ostream& operator<<(std::ostream& os, const addp::field& field)
     switch(field.type())
     {
         case addp::field::FT_DCHP:
-            os << field.value<bool>();
+            os << (field.value<bool>() ? "true" : "false");
             break;
 
+        case addp::field::FT_HW_TYPE:
+        case addp::field::FT_HW_REV:
         case addp::field::FT_SERIAL_COUNT:
-            os << std::dec << field.value<uint8_t>();
+            os << std::dec << int(field.value<uint8_t>());
             break;
+
+        case addp::field::FT_VERSION:
+            os << std::dec << field.value<uint16_t>();
 
         case addp::field::FT_PORT:
         case addp::field::FT_SSL_PORT:
@@ -231,23 +277,21 @@ std::ostream& operator<<(std::ostream& os, const addp::field& field)
             os << field.value<addp::mac_address>();
             break;
 
-            /*
-        case addp::field::FT_HW_TYPE:
-        case addp::field::FT_HW_REV:
-            //os << field.value<int>();
-            break;
-            */
-
-            /*
-        case addp::field::FT_RESULT_FLAG:
-        case addp::field::FT_CONF_ERR_CODE:
-        case addp::field::FT_ERR_CODE:
-        case addp::field::FT_VERSION:
         case addp::field::FT_VENDOR:
-            //os << field.value<int>();
-            os << "custom";
+            os << field.value<addp::guid>();
             break;
-            */
+
+        case addp::field::FT_CONF_ERR_CODE:
+            os << std::dec << field.value<addp::field::config_error>();
+            break;
+
+        case addp::field::FT_ERR_CODE:
+            os << std::dec << field.value<addp::field::error_code>();
+            break;
+
+        case addp::field::FT_RESULT_FLAG:
+            os << std::dec << field.value<addp::field::result_flag>();
+            break;
 
         default:
         {
