@@ -1,23 +1,31 @@
-#ifndef ADDP_OPTIONS_H
-#define ADDP_OPTIONS_H
+#ifndef ADDPC_OPTIONS_H
+#define ADDPC_OPTIONS_H
 
 #include <options.h>
 
 #include <string>
 #include <boost/program_options.hpp>
 
-class addp_options : public options
+namespace addpc {
+
+class options : public addp::options
 {
 public:
-    addp_options(int argc, char* argv[]);
+    options(int argc, char* argv[]);
 
     std::string logfile() const;
+
     std::string host() const;
     uint16_t port() const;
+
     unsigned int timeout() const;
+
+    std::string action() const;
 
 protected:
     virtual boost::program_options::options_description all_options();
 };
 
-#endif // OPTIONS_H
+} // namespace addpc
+
+#endif // ADDPC_OPTIONS_H

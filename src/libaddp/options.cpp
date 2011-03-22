@@ -4,6 +4,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 
+namespace addp {
+
 options::options(int argc, char* argv[])
 {
     parse(argc, argv);
@@ -71,3 +73,5 @@ int options::verbose() const
 {
     return _vm["verbose"].as<int>();
 }
+
+} // namespace addp

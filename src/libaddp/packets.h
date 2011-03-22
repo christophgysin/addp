@@ -1,3 +1,6 @@
+#ifndef ADDP_PACKETS_H
+#define ADDP_PACKETS_H
+
 #include "types.h"
 #include "packet.h"
 
@@ -54,3 +57,5 @@ public:
 };
 
 } // namespace addp
+
+#endif // ADDP_PACKETS_H

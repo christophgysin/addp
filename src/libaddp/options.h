@@ -4,6 +4,8 @@
 #include <string>
 #include <boost/program_options.hpp>
 
+namespace addp {
+
 class options
 {
 public:
@@ -25,5 +27,7 @@ protected:
     boost::program_options::variables_map _vm;
     std::string _progname;
 };
+
+} // namespace addp
 
 #endif // OPTIONS_H
