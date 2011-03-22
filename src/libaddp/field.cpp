@@ -69,7 +69,7 @@ std::string addp::field::field_type2str(field_type type)
     switch(type)
     {
         case FT_NONE:
-            return "None";
+            return "none";
         case FT_MAC_ADDR:
             return "6 byte MAC address";
         case FT_IP_ADDR:
@@ -107,19 +107,28 @@ std::string addp::field::field_type2str(field_type type)
         case FT_SERIAL_COUNT:
             return "1 byte serial port count";
         case FT_SSL_PORT:
-            return "4 byte encryFTed port";
+            return "4 byte encrypted port";
         case FT_VERSION:
             return "version ID";
         case FT_VENDOR:
             return "vendor GUID";
     };
-    return str(boost::format("Unknown (0x%02x)") % type);
+    return str(boost::format("unknown (0x%02x)") % type);
+}
+
+template<>
+std::string field::value() const
+{
+    std::string s;
+    copy(_payload.begin(), _payload.end(), back_inserter(s));
+    return s;
 }
 
 template<typename T>
-T field::value()
+T field::value() const
 {
     T t;
+
     return t;
 }
 
@@ -139,10 +148,59 @@ std::ostream& operator<<(std::ostream& os, const addp::field& field)
     os << std::endl;
 #endif // ADDP_FIELD_DEBUG
 
-    os << addp::field::field_type2str(field.type()) << " =";
+    os << addp::field::field_type2str(field.type()) << " = ";
 
-    BOOST_FOREACH(uint8_t b, field.payload())
-        os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
+    switch(field.type())
+    {
+        case addp::field::FT_NONE:
+            break;
 
-    return os;
+        case addp::field::FT_MAC_ADDR:
+            //os << field.value<mac_address>();
+            os << "xx:xx:xx:xx:xx:xx";
+            break;
+
+        case addp::field::FT_IP_ADDR:
+        case addp::field::FT_NETMASK:
+        case addp::field::FT_GATEWAY:
+        case addp::field::FT_DNS:
+            //os << field.value<ip_address>();
+            os << "xxx.xxx.xxx.xxx";
+            break;
+
+        case addp::field::FT_NETWORK:
+        case addp::field::FT_DOMAIN:
+        case addp::field::FT_FIRMWARE:
+        case addp::field::FT_RESULT_MSG:
+        case addp::field::FT_DEVICE_NAME:
+            os << field.value<std::string>();
+            break;
+
+        case addp::field::FT_HW_TYPE:
+        case addp::field::FT_HW_REV:
+        case addp::field::FT_PORT:
+        case addp::field::FT_SSL_PORT:
+            //os << field.value<int>();
+            os << "int";
+            break;
+
+        case addp::field::FT_RESULT_FLAG:
+        case addp::field::FT_CONF_ERR_CODE:
+        case addp::field::FT_DCHP:
+        case addp::field::FT_ERR_CODE:
+        case addp::field::FT_SERIAL_COUNT:
+        case addp::field::FT_VERSION:
+        case addp::field::FT_VENDOR:
+            //os << field.value<int>();
+            os << "custom";
+            break;
+
+        default:
+        {
+            BOOST_FOREACH(uint8_t b, field.payload())
+                os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
+            break;
+        }
+    }
+    return os << std::endl;
 }

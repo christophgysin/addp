@@ -80,7 +80,7 @@ public:
     static std::string field_type2str(field_type type);
 
     template<typename T>
-    T value();
+    T value() const;
 
 private:
     field_header _header;

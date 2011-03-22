@@ -98,7 +98,7 @@ std::string addp::packet::packet_type2str(packet_type type)
     switch(type)
     {
         case PT_NONE:
-            return "None";
+            return "none";
         case PT_DISCOVERY_REQUEST:
             return "Discovery Request";
         case PT_DISCOVERY_RESPONSE:
@@ -116,14 +116,14 @@ std::string addp::packet::packet_type2str(packet_type type)
         case PT_DHCP_NET_CONFIG_REPONSE:
             return "DHCP Net Config Response";
     };
-    return str(boost::format("Unknown (0x%02x)") % type);
+    return str(boost::format("unknown (0x%02x)") % type);
 }
 
 } // namespace addp
 
 std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
 {
-    os << addp::packet::packet_type2str(packet.type());
+    os << addp::packet::packet_type2str(packet.type()) << std::endl;
 
 #ifdef ADDP_PACKET_DEBUG
     os << std::endl;
@@ -138,7 +138,7 @@ std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
 #endif // ADDP_PACKET_DEBUG
 
     BOOST_FOREACH(const addp::field& f, packet.fields())
-        os << " " << f;
+        os << "  " << f;
 
     switch(packet.type())
     {
