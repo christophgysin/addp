@@ -1,6 +1,6 @@
-#include <cstring>
 #include <packet.h>
 
+#include <cstring>
 #include <iostream>
 
 namespace addp {
@@ -13,23 +13,26 @@ packet::packet()
 
 packet::packet(packet::packet_type type)
 {
-    _header.packet_type = htons(type);
+    _header.type = htons(type);
 }
 
 packet::packet(uint8_t* data, size_t len)
 {
     // header
-    memcpy(&_header, data, sizeof(packet_header));
+    memcpy(&_header, data, std::min(sizeof(packet_header), len));
 
     // payload
-    _payload.clear();
-    _payload.reserve(len - sizeof(packet_type));
-    copy(data+sizeof(packet_type), data+len, back_inserter(_payload));
+    if(len > sizeof(packet_header))
+    {
+        _payload.clear();
+        _payload.reserve(len - sizeof(packet_type));
+        copy(data+sizeof(packet_type), data+len, back_inserter(_payload));
+    }
 }
 
 bool packet::check()
 {
-    if(_payload.size() != _header.payload_size)
+    if(_payload.size() != _header.size)
         return false;
 
     return true;
@@ -37,7 +40,7 @@ bool packet::check()
 
 packet::packet_type packet::type() const
 {
-    return static_cast<packet::packet_type>(ntohs(_header.packet_type));
+    return static_cast<packet::packet_type>(ntohs(_header.type));
 }
 
 const std::vector<uint8_t>& packet::payload() const
@@ -48,7 +51,7 @@ const std::vector<uint8_t>& packet::payload() const
 void packet::add_raw(const uint8_t* data, size_t len)
 {
     copy(data, data+len, back_inserter(_payload));
-    _header.payload_size = htons(_payload.size());
+    _header.size = htons(_payload.size());
 }
 
 std::vector<uint8_t> packet::raw() const

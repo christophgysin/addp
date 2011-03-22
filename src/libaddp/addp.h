@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-#include <packet.h>
-
 namespace addp {
 
 static const std::string IP_ADDRESS = "224.0.5.128";

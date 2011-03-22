@@ -2,9 +2,10 @@
 #define ADDP_FIELD_H
 
 #include <stdint.h>
+#include <arpa/inet.h>
 #include <vector>
 
-#include <addp.h>
+#include "addp.h"
 
 namespace addp {
 
@@ -67,26 +68,27 @@ public:
         BF_TRUE = 0x01,
     };
 
-    field(){}
-    field(field_type t) : _type(t) {}
+    field();
+    field(field_type t);
+    field(uint8_t* data, size_t len);
 
-    field_type type() { return _type; }
-    size_t size() { return _payload.size(); }
+    field_type type() const;
+    size_t size() const;
+    const std::vector<uint8_t>& payload() const;
+    void add_raw(const uint8_t* data, size_t len);
+    std::vector<uint8_t> raw() const;
+    static std::string field_type2str(field_type type);
 
     template<typename T>
-    T value()
-    {
-        T t;
-        return t;
-    }
+    T value();
 
 private:
-    field_type _type;
-
     field_header _header;
     std::vector<uint8_t> _payload;
 };
 
 } // namespace addp
+
+std::ostream& operator<<(std::ostream& os, const addp::field& field);
 
 #endif // ADDP_FIELD_H

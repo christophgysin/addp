@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 #include <arpa/inet.h>
-
 #include <cstring>
 #include <vector>
 #include <ostream>
@@ -12,7 +11,7 @@
 
 #include <boost/foreach.hpp>
 
-#include <field.h>
+#include "field.h"
 
 namespace addp {
 
@@ -23,8 +22,8 @@ public:
 
     struct packet_header {
         char magic[4];
-        uint16_t packet_type;
-        uint16_t payload_size;
+        uint16_t type;
+        uint16_t size;
         packet_header() { strncpy(magic, MAGIC, 4); }
     };
 
@@ -50,13 +49,11 @@ public:
     const std::vector<uint8_t>& payload() const;
     void add_raw(const uint8_t* data, size_t len);
     std::vector<uint8_t> raw() const;
-
     static std::string packet_type2str(packet_type type);
 
 private:
     packet_header _header;
     std::vector<uint8_t> _payload;
-
     std::vector<field> _fields;
 };
 
