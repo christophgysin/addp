@@ -1,18 +1,15 @@
-#include <iostream>
-#include <addp.h>
+#include <boost/asio/io_service.hpp>
 
-class addpd {
-public:
-    static std::string version()
-    {
-        return "0.1";
-    }
-};
+#include "options.h"
+#include "server.h"
 
 int main(int argc, char* argv[])
 {
-    std::cout << "libaddp version: " << addp::version() << std::endl;
-    std::cout << "addpd version:   " << addpd::version() << std::endl;
+    addpd::options options(argc, argv);
+
+    boost::asio::io_service io_service;
+    server s(io_service, options.port());
+    io_service.run();
 
     return 0;
 }
