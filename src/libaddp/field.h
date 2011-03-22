@@ -73,20 +73,21 @@ public:
 
     bool check() const;
     field_type type() const;
+    std::string type_str() const;
+    template<typename T> T value() const;
+    std::string value_str() const;
+
     size_t size() const;
     const std::vector<uint8_t>& payload() const;
     void add_raw(const uint8_t* data, size_t len);
     std::vector<uint8_t> raw() const;
 
+private:
     static std::string field_type2str(field_type type);
     static std::string error_code2str(error_code code);
     static std::string result_flag2str(result_flag flag);
     static std::string config_error2str(config_error error);
 
-    template<typename T>
-    T value() const;
-
-private:
     field_header _header;
     std::vector<uint8_t> _payload;
 };

@@ -85,11 +85,6 @@ bool packet::parse_fields()
 
 const std::vector<field>& packet::fields() const
 {
-    /*
-    if(fields.empty() && !payload.empty())
-        parse_fields();
-    */
-
     return _fields;
 }
 
@@ -97,24 +92,15 @@ std::string addp::packet::packet_type2str(packet_type type)
 {
     switch(type)
     {
-        case PT_NONE:
-            return "none";
-        case PT_DISCOVERY_REQUEST:
-            return "Discovery Request";
-        case PT_DISCOVERY_RESPONSE:
-            return "Discovery Response";
-        case PT_STATIC_NET_CONFIG_REQUEST:
-            return "Net Config Request";
-        case PT_STATIC_NET_CONFIG_REPONSE:
-            return "Net Config Response";
-        case PT_REBOOT_REQUEST:
-            return "Reboot Request";
-        case PT_REBOOT_REPONSE:
-            return "Reboot Response";
-        case PT_DHCP_NET_CONFIG_REQUEST:
-            return "DHCP Net Config Request";
-        case PT_DHCP_NET_CONFIG_REPONSE:
-            return "DHCP Net Config Response";
+        case PT_NONE:                       return "None";
+        case PT_DISCOVERY_REQUEST:          return "Discovery Request";
+        case PT_DISCOVERY_RESPONSE:         return "Discovery Response";
+        case PT_STATIC_NET_CONFIG_REQUEST:  return "Net Config Request";
+        case PT_STATIC_NET_CONFIG_REPONSE:  return "Net Config Response";
+        case PT_REBOOT_REQUEST:             return "Reboot Request";
+        case PT_REBOOT_REPONSE:             return "Reboot Response";
+        case PT_DHCP_NET_CONFIG_REQUEST:    return "DHCP Net Config Request";
+        case PT_DHCP_NET_CONFIG_REPONSE:    return "DHCP Net Config Response";
     };
     return str(boost::format("unknown (0x%02x)") % type);
 }
