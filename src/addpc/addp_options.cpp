@@ -14,7 +14,7 @@ boost::program_options::options_description addp_options::all_options()
     const std::string usage = "ADDP options";
 
     boost::program_options::options_description addp_options(usage);
-    options.add_options()
+    addp_options.add_options()
         ("port,p",
             boost::program_options::value<uint16_t>()->default_value(addp::UDP_PORT),
             "udp port")

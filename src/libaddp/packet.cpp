@@ -138,7 +138,8 @@ std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
 #endif // ADDP_PACKET_DEBUG
 
     BOOST_FOREACH(const addp::field& f, packet.fields())
-        os << "  " << f;
+        if(f.type() != addp::field::FT_NONE)
+            os << "  " << f;
 
     switch(packet.type())
     {

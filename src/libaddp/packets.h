@@ -1,12 +1,14 @@
+#include "types.h"
 #include "packet.h"
 
 namespace addp {
 
+static const mac_address MAC_ADDR_BROADCAST(0xffffffffffff);
+
 class discovery_request : public packet
 {
-    static const uint64_t MAC_ADDR_BROADCAST = 0xffffffffffff;
 public:
-    discovery_request(const uint64_t mac_addr = MAC_ADDR_BROADCAST);
+    discovery_request(const mac_address mac_addr = MAC_ADDR_BROADCAST);
 };
 
 } // namespace addp
