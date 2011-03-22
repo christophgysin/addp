@@ -44,6 +44,11 @@ packet::packet_type packet::type() const
     return static_cast<packet::packet_type>(ntohs(_header.type));
 }
 
+std::string packet::type_str() const
+{
+    return packet_type2str(type());
+}
+
 const std::vector<uint8_t>& packet::payload() const
 {
     return _payload;
@@ -96,11 +101,11 @@ std::string addp::packet::packet_type2str(packet_type type)
         case PT_DISCOVERY_REQUEST:          return "Discovery Request";
         case PT_DISCOVERY_RESPONSE:         return "Discovery Response";
         case PT_STATIC_NET_CONFIG_REQUEST:  return "Net Config Request";
-        case PT_STATIC_NET_CONFIG_REPONSE:  return "Net Config Response";
+        case PT_STATIC_NET_CONFIG_RESPONSE:  return "Net Config Response";
         case PT_REBOOT_REQUEST:             return "Reboot Request";
-        case PT_REBOOT_REPONSE:             return "Reboot Response";
+        case PT_REBOOT_RESPONSE:             return "Reboot Response";
         case PT_DHCP_NET_CONFIG_REQUEST:    return "DHCP Net Config Request";
-        case PT_DHCP_NET_CONFIG_REPONSE:    return "DHCP Net Config Response";
+        case PT_DHCP_NET_CONFIG_RESPONSE:    return "DHCP Net Config Response";
     };
     return str(boost::format("unknown (0x%02x)") % type);
 }
@@ -109,8 +114,6 @@ std::string addp::packet::packet_type2str(packet_type type)
 
 std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
 {
-    os << addp::packet::packet_type2str(packet.type()) << std::endl;
-
 #ifdef ADDP_PACKET_DEBUG
     os << std::endl;
     os << "packet raw():" << std::endl;
@@ -122,6 +125,8 @@ std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
         os << " " << std::hex << std::setfill('0') << std::setw(2) << int(b);
     os << std::endl;
 #endif // ADDP_PACKET_DEBUG
+
+    os << packet.type_str() << std::endl;
 
     BOOST_FOREACH(const addp::field& f, packet.fields())
         if(f.type() != addp::field::FT_NONE)

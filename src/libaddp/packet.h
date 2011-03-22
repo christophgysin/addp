@@ -32,20 +32,22 @@ public:
         PT_DISCOVERY_REQUEST,
         PT_DISCOVERY_RESPONSE,
         PT_STATIC_NET_CONFIG_REQUEST,
-        PT_STATIC_NET_CONFIG_REPONSE,
+        PT_STATIC_NET_CONFIG_RESPONSE,
         PT_REBOOT_REQUEST,
-        PT_REBOOT_REPONSE,
+        PT_REBOOT_RESPONSE,
         PT_DHCP_NET_CONFIG_REQUEST,
-        PT_DHCP_NET_CONFIG_REPONSE,
+        PT_DHCP_NET_CONFIG_RESPONSE,
     };
 
     packet(packet_type t);
     packet(uint8_t* data, size_t len);
 
     bool check() const;
-    packet_type type() const;
-    uint16_t size() const;
 
+    packet_type type() const;
+    std::string type_str() const;
+
+    uint16_t size() const;
     void add_raw(const uint8_t* data, size_t len);
     const std::vector<uint8_t>& payload() const;
     std::vector<uint8_t> raw() const;
@@ -53,9 +55,9 @@ public:
     bool parse_fields();
     const std::vector<field>& fields() const;
 
+private:
     static std::string packet_type2str(packet_type type);
 
-private:
     packet_header _header;
     std::vector<uint8_t> _payload;
     std::vector<field> _fields;
