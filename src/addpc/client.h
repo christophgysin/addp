@@ -2,9 +2,7 @@
 #define ADDPC_CLIENT_H
 
 #include <boost/asio/io_service.hpp>
-
-#include <addp.h>
-#include <udp_socket.h>
+#include <boost/asio/ip/udp.hpp>
 
 #include "options.h"
 
@@ -29,9 +27,7 @@ private:
 
     const options& _options;
     boost::asio::io_service _io_service;
-    boost::asio::ip::address _address;
-    boost::asio::ip::udp::endpoint _endpoint;
-    boost::asio::ip::udp::endpoint _sender;
+    boost::asio::ip::udp::endpoint _listen;
     boost::asio::ip::udp::socket _socket;
     enum { max_length = 4096 };
     boost::array<uint8_t, max_length> _data;

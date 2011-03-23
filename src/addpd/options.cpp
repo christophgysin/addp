@@ -23,9 +23,9 @@ boost::program_options::options_description options::all_options()
         ("port,p",
             boost::program_options::value<uint16_t>()->default_value(addp::UDP_PORT),
             "udp port")
-        ("host,u",
-            boost::program_options::value<std::string>()->default_value(addp::IP_ADDRESS),
-            "host")
+        ("listen,L",
+            boost::program_options::value<std::string>()->default_value(addp::MCAST_IP_ADDRESS),
+            "ip address to listen")
     ;
 
     opts.add(addpc_opts);

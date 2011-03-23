@@ -15,10 +15,12 @@ public:
 
     std::string logfile() const;
 
-    std::string host() const;
+    std::string listen() const;
     uint16_t port() const;
+    std::string multicast() const;
 
-    unsigned int timeout() const;
+    ssize_t timeout() const;
+    ssize_t max_count() const;
 
     std::string action() const;
 
