@@ -18,8 +18,9 @@ public:
     discover(boost::asio::ip::udp::socket& socket,
             const addp::mac_address& mac_address = addp::MAC_ADDR_BROADCAST);
 
+    void set_verbose(bool verbose);
     void set_mac_address(const addp::mac_address& mac_address);
-    void set_mcast_address(const std::string& mcast_address);
+    void set_mcast_address(const std::string& mcast_address, uint16_t port = addp::UDP_PORT);
     void set_timeout(ssize_t timeout_ms);
     void set_max_count(ssize_t max_count);
 
@@ -30,14 +31,17 @@ private:
     void handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd);
 
     boost::asio::ip::udp::socket& _socket;
-    boost::asio::ip::udp::endpoint _sender;
+    boost::asio::ip::udp::endpoint _sender_address;
+    boost::asio::ip::udp::endpoint _mcast_address;
+
     enum { max_length = 4096 };
     boost::array<uint8_t, max_length> _data;
 
     addp::mac_address _mac_address;
-    std::string _mcast_address;
     ssize_t _timeout_ms;
     ssize_t _max_count;
+    ssize_t _count;
+    bool _verbose;
 
     std::list<addp::packet> _packets;
 };

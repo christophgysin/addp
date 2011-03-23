@@ -38,9 +38,10 @@ bool client::discover()
 {
     addpc::discover d(_socket);
     //d.set_mac_address(...);
-    d.set_mcast_address(_options.multicast());
+    d.set_mcast_address(_options.multicast(), _options.port());
     d.set_max_count(_options.max_count());
     d.set_timeout(_options.timeout());
+    d.set_verbose(_options.verbose() > 0);
     d.run();
 
     _io_service.run();

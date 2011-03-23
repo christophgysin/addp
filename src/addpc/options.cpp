@@ -71,12 +71,12 @@ std::string options::action() const
 
 ssize_t options::timeout() const
 {
-    return _vm["timeout"].as<size_t>();
+    return _vm["timeout"].as<ssize_t>();
 }
 
 ssize_t options::max_count() const
 {
-    return _vm["max_count"].as<size_t>();
+    return _vm["max_count"].as<ssize_t>();
 }
 
 
