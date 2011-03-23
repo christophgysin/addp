@@ -8,7 +8,6 @@
 #include <addp.h>
 #include <types.h>
 #include <packet.h>
-#include <packets.h>
 
 namespace addpc {
 
@@ -25,6 +24,8 @@ public:
     void set_max_count(ssize_t max_count);
 
     bool run();
+
+    const std::list<addp::packet>& packets() const;
 
 private:
     void handle_send_to(const boost::system::error_code& error, size_t bytes_sent);

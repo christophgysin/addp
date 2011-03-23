@@ -4,6 +4,9 @@
 #include <boost/bind.hpp>
 #include <boost/asio/placeholders.hpp>
 
+#include <packets.h>
+#include <packet_io.h>
+
 namespace addpc {
 
 discover::discover(boost::asio::ip::udp::socket& socket, const addp::mac_address& mac_address) :
@@ -68,7 +71,10 @@ bool discover::run()
     return true;
 }
 
-
+const std::list<addp::packet>& discover::packets() const
+{
+    return _packets;
+}
 
 void discover::handle_send_to(const boost::system::error_code& /*error*/, size_t /*bytes_sent*/)
 {

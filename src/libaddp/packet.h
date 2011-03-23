@@ -5,8 +5,6 @@
 #include <arpa/inet.h>
 #include <cstring>
 #include <vector>
-#include <ostream>
-#include <iomanip>
 #include <algorithm>
 
 #include <boost/foreach.hpp>
@@ -64,7 +62,5 @@ private:
 };
 
 } // namespace addp
-
-std::ostream& operator<<(std::ostream& os, const addp::packet& packet);
 
 #endif // ADDP_PACKET_H

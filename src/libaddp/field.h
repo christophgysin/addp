@@ -94,6 +94,4 @@ private:
 
 } // namespace addp
 
-std::ostream& operator<<(std::ostream& os, const addp::field& field);
-
 #endif // ADDP_FIELD_H

@@ -6,8 +6,6 @@
 
 namespace addp {
 
-static const mac_address MAC_ADDR_BROADCAST = {{ 0xff, 0xff, 0xff, 0xff, 0xff, 0xff }};
-
 class discovery_request : public packet
 {
 public:
