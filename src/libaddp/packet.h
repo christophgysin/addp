@@ -40,7 +40,7 @@ public:
     };
 
     packet(packet_type t);
-    packet(uint8_t* data, size_t len);
+    packet(const uint8_t* data, size_t len);
 
     bool check() const;
 

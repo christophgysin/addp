@@ -1,6 +1,8 @@
 #include "client.h"
 
 #include <iostream>
+#include <boost/bind.hpp>
+#include <boost/asio/placeholders.hpp>
 
 #include <packet.h>
 #include <packets.h>
@@ -11,8 +13,13 @@ namespace addpc {
 
 client::client(const options& options) :
     _options(options),
-    _socket(options.host(), options.port())
+    _io_service(),
+    _address(boost::asio::ip::address::from_string(options.host())),
+    _endpoint(_address, options.port()),
+    _sender(),
+    _socket(_io_service)
 {
+    _socket.open(boost::asio::ip::udp::v4());
 }
 
 bool client::run()
@@ -35,25 +42,53 @@ bool client::discover()
     addp::discovery_request request;
 
     if(_options.verbose())
-        std::cout << "sending packet: " << request << std::endl;
+        std::cout << "sending to: " << _endpoint << " packet: " << request
+            << std::endl << std::endl;
 
-    _socket.send(request.raw());
+    boost::asio::ip::udp::endpoint endpoint(
+            boost::asio::ip::address::from_string(addp::IP_ADDRESS),
+            addp::UDP_PORT);
 
-    while(true)
+    _socket.async_send_to(
+        boost::asio::buffer(request.raw()), endpoint,
+        boost::bind(&client::handle_send_to, this,
+            boost::asio::placeholders::error,
+            boost::asio::placeholders::bytes_transferred));
+
+    _io_service.run();
+
+    return true;
+}
+
+void client::handle_send_to(const boost::system::error_code& /*error*/, size_t /*bytes_sent*/)
+{
+    _socket.async_receive_from(
+        boost::asio::buffer(_data, max_length), _sender,
+        boost::bind(&client::handle_receive_from, this,
+            boost::asio::placeholders::error,
+            boost::asio::placeholders::bytes_transferred));
+}
+
+void client::handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd)
+{
+    if(!error && bytes_recvd > 0)
     {
-        boost::asio::ip::udp::endpoint sender;
-        boost::array<uint8_t, 1024> buffer;
-        size_t len = _socket.receive(sender, boost::asio::buffer(buffer));
-
-        addp::packet response(buffer.data(), len);
+        addp::packet response(_data.data(), bytes_recvd);
 
         if(!response.parse_fields())
             std::cerr << "failed to parse fields!" << std::endl;
 
-        std::cout << sender << " " << response << std::endl;
+        std::cout << _sender << " " << response << std::endl;
     }
+    else
+        std::cout << "error: " <<  error.value() << "(" << error.message() << ")"
+            << " received: " << bytes_recvd << std::endl;
 
-    return false;
+    _socket.async_receive_from(
+        boost::asio::buffer(_data, max_length), _sender,
+        boost::bind(&client::handle_receive_from, this,
+            boost::asio::placeholders::error,
+            boost::asio::placeholders::bytes_transferred));
 }
 
 bool client::static_net_config()

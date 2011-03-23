@@ -17,7 +17,7 @@ packet::packet(packet::packet_type type)
     _header.type = htons(type);
 }
 
-packet::packet(uint8_t* data, size_t len)
+packet::packet(const uint8_t* data, size_t len)
 {
     // header
     memcpy(&_header, data, std::min(sizeof(packet_header), len));
