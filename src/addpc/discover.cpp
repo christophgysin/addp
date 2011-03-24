@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <boost/bind.hpp>
+#include <boost/format.hpp>
 #include <boost/asio/placeholders.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
@@ -79,7 +80,19 @@ bool discover::run()
             boost::asio::placeholders::error,
             boost::asio::placeholders::bytes_transferred));
 
-    _io_service.run();
+    try
+    {
+        _io_service.run();
+    }
+    catch (const boost::system::system_error& error)
+    {
+        std::cerr << 
+            str(boost::format("Error: %s (%d)")
+                    % error.code().message()
+                    % error.code().value())
+            << std::endl;
+        return false;
+    }
 
     return true;
 }
