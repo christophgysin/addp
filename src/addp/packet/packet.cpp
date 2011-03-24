@@ -20,14 +20,14 @@ packet::packet(packet::packet_type type)
 packet::packet(const uint8_t* data, size_t len)
 {
     // header
-    memcpy(&_header, data, std::min(sizeof(packet_header), len));
+    memcpy(&_header, data, std::min(sizeof(_header), len));
 
     // payload
-    if(len > sizeof(packet_header))
+    if(len > sizeof(_header))
     {
         _payload.clear();
-        _payload.reserve(len - sizeof(packet_type));
-        copy(data+sizeof(packet_type), data+len, back_inserter(_payload));
+        _payload.reserve(len - sizeof(_header));
+        copy(data+sizeof(_header), data+len, back_inserter(_payload));
     }
 }
 
@@ -64,7 +64,7 @@ std::vector<uint8_t> packet::raw() const
 {
     std::vector<uint8_t> buffer;
     const uint8_t* headerp = reinterpret_cast<const uint8_t*>(&_header);
-    copy(headerp, headerp+sizeof(packet_header), back_inserter(buffer));
+    copy(headerp, headerp+sizeof(_header), back_inserter(buffer));
     copy(_payload.begin(), _payload.end(), back_inserter(buffer));
 
     return buffer;

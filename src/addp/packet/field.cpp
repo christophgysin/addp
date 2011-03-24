@@ -18,8 +18,8 @@ field::field(field::field_type type)
 field::field(std::vector<uint8_t>::iterator& iter, const std::vector<uint8_t>::iterator& end)
 {
     // header
-    copy(iter, iter+sizeof(field_header), reinterpret_cast<uint8_t*>(&_header));
-    std::advance(iter, sizeof(field_header));
+    copy(iter, iter+sizeof(_header), reinterpret_cast<uint8_t*>(&_header));
+    std::advance(iter, sizeof(_header));
 
     // payload
     _payload.clear();
@@ -193,7 +193,7 @@ std::vector<uint8_t> field::raw() const
 {
     std::vector<uint8_t> buffer;
     const uint8_t* headerp = reinterpret_cast<const uint8_t*>(&_header);
-    copy(headerp, headerp+sizeof(field_header), back_inserter(buffer));
+    copy(headerp, headerp+sizeof(_header), back_inserter(buffer));
     copy(_payload.begin(), _payload.end(), back_inserter(buffer));
 
     return buffer;
