@@ -5,7 +5,7 @@ include(cmake/dependencies.cmake)
 include(cmake/version.cmake)
 include(cmake/packaging.cmake)
 
-message("version: " ${ADDP_VERSION})
+message("addp version: " ${ADDP_VERSION})
 
 set(CMAKE_INSTALL_PREFIX /usr)
 set(CMAKE_BUILD_TYPE Release)
