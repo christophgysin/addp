@@ -1,10 +1,7 @@
 #include "client.h"
 
 #include <iostream>
-
-#include <packet.h>
-#include <packets.h>
-#include <action/discover.h>
+#include <addp.h>
 
 #include "options.h"
 

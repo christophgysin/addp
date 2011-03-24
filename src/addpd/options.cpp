@@ -1,7 +1,5 @@
 #include "options.h"
 
-#include <addp.h>
-
 namespace addpd {
 
 options::options(int argc, char* argv[])

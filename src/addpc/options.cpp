@@ -1,7 +1,5 @@
 #include "options.h"
 
-#include <addp.h>
-
 namespace addpc {
 
 options::options(int argc, char* argv[])

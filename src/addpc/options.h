@@ -1,10 +1,9 @@
 #ifndef ADDPC_OPTIONS_H
 #define ADDPC_OPTIONS_H
 
-#include <options.h>
-
 #include <string>
 #include <boost/program_options.hpp>
+#include <addp.h>
 
 namespace addpc {
 
