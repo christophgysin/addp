@@ -7,7 +7,7 @@
 
 namespace addp {
 
-std::ostream& operator<<(std::ostream& os, const addp::packet& packet);
+std::ostream& operator<<(std::ostream& os, const packet& packet);
 
 } // namespace addp
 

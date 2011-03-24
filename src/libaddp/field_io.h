@@ -7,7 +7,7 @@
 
 namespace addp {
 
-std::ostream& operator<<(std::ostream& os, const addp::field& field);
+std::ostream& operator<<(std::ostream& os, const field& field);
 
 } // namespace addp
 

@@ -2,7 +2,7 @@
 
 namespace addp {
 
-std::ostream& operator<<(std::ostream& os, const addp::field& field)
+std::ostream& operator<<(std::ostream& os, const field& field)
 {
 #ifdef ADDP_FIELD_DEBUG
     os << std::endl;
@@ -16,7 +16,7 @@ std::ostream& operator<<(std::ostream& os, const addp::field& field)
     os << std::endl;
 #endif // ADDP_FIELD_DEBUG
 
-    if(field.type() == addp::field::FT_NONE)
+    if(field.type() == field::FT_NONE)
         return os;
 
     return os << field.type_str() << " = " << field.value_str() << std::endl;

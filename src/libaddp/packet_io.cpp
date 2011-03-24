@@ -6,7 +6,7 @@
 
 namespace addp {
 
-std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
+std::ostream& operator<<(std::ostream& os, const packet& packet)
 {
 #ifdef ADDP_PACKET_DEBUG
     os << std::endl;
@@ -22,13 +22,13 @@ std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
 
     os << packet.type_str() << std::endl;
 
-    BOOST_FOREACH(const addp::field& f, packet.fields())
-        if(f.type() != addp::field::FT_NONE)
+    BOOST_FOREACH(const field& f, packet.fields())
+        if(f.type() != field::FT_NONE)
             os << "  " << f;
 
     switch(packet.type())
     {
-        case addp::packet::PT_DISCOVERY_REQUEST:
+        case packet::PT_DISCOVERY_REQUEST:
         {
             os << std::hex << std::setfill('0');
 

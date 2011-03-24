@@ -6,7 +6,7 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
-#include "types.h"
+#include "types_io.h"
 
 namespace addp {
 
@@ -140,15 +140,15 @@ std::string field::value_str() const
         case FT_NETMASK:
         case FT_GATEWAY:
         case FT_DNS:
-            os << value<addp::ip_address>();
+            os << value<ip_address>();
             break;
 
         case FT_MAC_ADDR:
-            os << value<addp::mac_address>();
+            os << value<mac_address>();
             break;
 
         case FT_VENDOR:
-            os << value<addp::guid>();
+            os << value<guid>();
             break;
 
         case FT_CONF_ERR_CODE:
@@ -199,7 +199,7 @@ std::vector<uint8_t> field::raw() const
     return buffer;
 }
 
-std::string addp::field::field_type2str(field_type type)
+std::string field::field_type2str(field_type type)
 {
     switch(type)
     {
@@ -229,7 +229,7 @@ std::string addp::field::field_type2str(field_type type)
     return str(boost::format("Unknown (0x%02x)") % type);
 }
 
-std::string addp::field::error_code2str(error_code code)
+std::string field::error_code2str(error_code code)
 {
     switch(code)
     {
@@ -241,7 +241,7 @@ std::string addp::field::error_code2str(error_code code)
     return str(boost::format("Unknown (0x%02x)") % code);
 }
 
-std::string addp::field::result_flag2str(result_flag flag)
+std::string field::result_flag2str(result_flag flag)
 {
     switch(flag)
     {
@@ -251,7 +251,7 @@ std::string addp::field::result_flag2str(result_flag flag)
     return str(boost::format("Unknown (0x%02x)") % flag);
 }
 
-std::string addp::field::config_error2str(config_error error)
+std::string field::config_error2str(config_error error)
 {
     switch(error)
     {

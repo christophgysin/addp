@@ -93,7 +93,7 @@ const std::vector<field>& packet::fields() const
     return _fields;
 }
 
-std::string addp::packet::packet_type2str(packet_type type)
+std::string packet::packet_type2str(packet_type type)
 {
     switch(type)
     {
