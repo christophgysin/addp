@@ -7,6 +7,7 @@ set(CPACK_PACKAGE_INSTALL_DIRECTORY "addp-${CMake_VERSION_MAJOR}.${CMake_VERSION
 set(CPACK_GENERATOR "TBZ2;DEB;RPM")
 set(CPACK_PACKAGE_CONTACT "Christoph Gysin <christoph.gysin@fr33z3.org>")
 set(CPACK_SOURCE_GENERATOR "TBZ2;DEB;RPM")
+set(CPACK_SOURCE_IGNORE_FILES ".git;bin;tags;cscope.out")
 
 if(WIN32 AND NOT UNIX)
   # There is a bug in NSI that does not handle full unix paths properly. Make
