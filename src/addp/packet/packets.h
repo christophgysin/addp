@@ -25,8 +25,8 @@ public:
         const ip_address& ip,
         const ip_address& subnet,
         const ip_address& gateway,
-        const mac_address& mac,
-        const std::string& auth
+        const mac_address& mac = MAC_ADDR_BROADCAST,
+        const std::string& auth = DEFAULT_PASSWORD
         );
 };
 
@@ -40,8 +40,8 @@ class reboot_request : public packet
 {
 public:
     reboot_request(
-        const mac_address& mac,
-        const std::string& auth
+        const mac_address& mac = MAC_ADDR_BROADCAST,
+        const std::string& auth = DEFAULT_PASSWORD
         );
 };
 
@@ -56,8 +56,8 @@ class dhcp_net_config_request : public packet
 public:
     dhcp_net_config_request(
         bool enable,
-        const mac_address& mac,
-        const std::string& auth
+        const mac_address& mac = MAC_ADDR_BROADCAST,
+        const std::string& auth = DEFAULT_PASSWORD
         );
 };
 
