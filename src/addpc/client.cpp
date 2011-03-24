@@ -4,9 +4,9 @@
 
 #include <packet.h>
 #include <packets.h>
+#include <action/discover.h>
 
 #include "options.h"
-#include "discover.h"
 
 namespace addpc {
 
