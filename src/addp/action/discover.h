@@ -8,7 +8,7 @@
 
 #include "constants.h"
 #include "types.h"
-#include "packet.h"
+#include "packet/packet.h"
 
 namespace addp {
 
