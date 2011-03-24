@@ -25,6 +25,7 @@ public:
     void set_max_count(ssize_t max_count);
 
     bool run();
+    void stop();
 
     const std::list<packet>& packets() const;
 

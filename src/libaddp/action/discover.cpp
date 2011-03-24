@@ -93,6 +93,12 @@ bool discover::run()
     return true;
 }
 
+void discover::stop()
+{
+    _socket.cancel();
+    _io_service.stop();
+}
+
 const std::list<packet>& discover::packets() const
 {
     return _packets;
@@ -125,7 +131,10 @@ void discover::handle_receive_from(const boost::system::error_code& error, size_
 
     // count reached?
     if(_max_count && _count == _max_count)
+    {
+        stop();
         return;
+    }
 
     // timeout reached?
     if(error == boost::asio::error::operation_aborted)
@@ -148,8 +157,7 @@ void discover::check_timeout()
 {
     if(_deadline.expires_at() <= boost::asio::deadline_timer::traits_type::now())
     {
-        _socket.cancel();
-        _socket.io_service().stop();
+        stop();
         _deadline.expires_at(boost::posix_time::pos_infin);
     }
     _deadline.async_wait(boost::bind(&discover::check_timeout, this));
