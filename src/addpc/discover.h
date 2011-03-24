@@ -4,6 +4,7 @@
 #include <list>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/udp.hpp>
+#include <boost/asio/deadline_timer.hpp>
 
 #include <addp.h>
 #include <types.h>
@@ -14,7 +15,7 @@ namespace addpc {
 class discover
 {
 public:
-    discover(boost::asio::ip::udp::socket& socket,
+    discover(const std::string& listen, uint16_t port,
             const addp::mac_address& mac_address = addp::MAC_ADDR_BROADCAST);
 
     void set_verbose(bool verbose);
@@ -31,17 +32,22 @@ private:
     void handle_send_to(const boost::system::error_code& error, size_t bytes_sent);
     void handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd);
 
-    boost::asio::ip::udp::socket& _socket;
-    boost::asio::ip::udp::endpoint _sender_address;
-    boost::asio::ip::udp::endpoint _mcast_address;
+    void check_timeout();
+    static void handle_receive(const boost::system::error_code& ec, size_t bytes_recvd,
+        boost::system::error_code* out_ec, size_t* out_bytes_recvd);
 
-    enum { max_length = 4096 };
-    boost::array<uint8_t, max_length> _data;
+    boost::asio::io_service _io_service;
+    boost::asio::ip::udp::endpoint _listen;
+    boost::asio::ip::udp::socket _socket;
+    boost::asio::ip::udp::endpoint _mcast_address;
+    boost::asio::ip::udp::endpoint _sender_address;
+    boost::asio::deadline_timer _deadline;
+    boost::array<uint8_t, addp::MAX_UDP_MESSAGE_LEN> _data;
 
     addp::mac_address _mac_address;
-    ssize_t _timeout_ms;
-    ssize_t _max_count;
     ssize_t _count;
+    ssize_t _max_count;
+    ssize_t _timeout_ms;
     bool _verbose;
 
     std::list<addp::packet> _packets;

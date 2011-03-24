@@ -11,10 +11,7 @@
 namespace addpc {
 
 client::client(const options& options) :
-    _options(options),
-    _io_service(),
-    _listen(boost::asio::ip::address::from_string(options.listen()), options.port()),
-    _socket(_io_service, _listen)
+    _options(options)
 {
 }
 
@@ -36,16 +33,15 @@ bool client::run()
 
 bool client::discover()
 {
-    addpc::discover d(_socket);
+    addpc::discover d(_options.listen(), _options.port());
     //d.set_mac_address(...);
     d.set_mcast_address(_options.multicast(), _options.port());
-    d.set_max_count(_options.max_count());
-    d.set_timeout(_options.timeout());
+    if(_options.max_count())
+        d.set_max_count(_options.max_count());
+    if(_options.timeout())
+        d.set_timeout(_options.timeout());
     d.set_verbose(_options.verbose() > 0);
     d.run();
-
-    _io_service.run();
-
     return true;
 }
 

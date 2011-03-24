@@ -33,10 +33,10 @@ boost::program_options::options_description options::all_options()
             boost::program_options::value<std::string>()->default_value("discover"),
             "action (discover/static/reboot/dhcp)")
         ("timeout,t",
-            boost::program_options::value<ssize_t>()->default_value(addp::RESPONSE_TIMEOUT),
+            boost::program_options::value<ssize_t>()->default_value(2000),
             "response timeout (in ms)")
         ("max_count,c",
-            boost::program_options::value<ssize_t>()->default_value(addp::RESPONSE_MAX_COUNT),
+            boost::program_options::value<ssize_t>()->default_value(0),
             "stop after receiving n responses")
     ;
 

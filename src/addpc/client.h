@@ -26,11 +26,6 @@ private:
     void handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd);
 
     const options& _options;
-    boost::asio::io_service _io_service;
-    boost::asio::ip::udp::endpoint _listen;
-    boost::asio::ip::udp::socket _socket;
-    enum { max_length = 4096 };
-    boost::array<uint8_t, max_length> _data;
 };
 
 } // namespace addpc
