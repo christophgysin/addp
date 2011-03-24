@@ -14,6 +14,12 @@ client::client(const options& options) :
 
 bool client::run()
 {
+    if(_options.version())
+    {
+        std::cout << ADDP_VERSION << std::endl;
+        return true;
+    }
+
     if(_options.action() == "discover")
         return discover();
     if(_options.action() == "static")

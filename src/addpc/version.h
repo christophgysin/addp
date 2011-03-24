@@ -1,6 +1,0 @@
-#ifndef ADDPC_VERSION_H
-#define ADDPC_VERSION_H
-
-#define ADDPC_VERSION "0.1.0"
-
-#endif // ADDPC_VERSION_H

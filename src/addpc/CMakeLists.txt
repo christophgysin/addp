@@ -6,4 +6,4 @@ target_link_libraries(${BIN}
     ${Boost_SYSTEM_LIBRARY}
     ${Boost_PROGRAM_OPTIONS_LIBRARY}
     )
-install(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/${BIN} DESTINATION bin)
+install(TARGETS ${BIN} DESTINATION bin)

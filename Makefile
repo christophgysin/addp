@@ -1,11 +1,17 @@
 B = bin
-T = addp addpc addpd
-E = package install
+T = all help \
+	clean \
+	depend edit_cache \
+	install install/local install/strip \
+	list_install_components \
+	package package_source \
+	rebuild_cache \
+	addp addpc addpd
 
-all: config $(T)
+default: config all
 
 config:
 	(mkdir -p ${B} && cd ${B} && cmake ..)
 
-$(T) $(E):
+$(T):
 	(cd ${B} && make $@)
