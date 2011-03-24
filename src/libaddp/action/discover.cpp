@@ -69,6 +69,7 @@ bool discover::run()
     // set timeout from now
     _deadline.expires_from_now(boost::posix_time::milliseconds(_timeout_ms));
 
+    // send request to multicast address
     _socket.async_send_to(
         boost::asio::buffer(request.raw()),
         _mcast_address,
@@ -104,8 +105,22 @@ const std::list<packet>& discover::packets() const
     return _packets;
 }
 
-void discover::handle_send_to(const boost::system::error_code& /*error*/, size_t /*bytes_sent*/)
+void discover::check_timeout()
 {
+    if(_deadline.expires_at() <= boost::asio::deadline_timer::traits_type::now())
+    {
+        stop();
+        _deadline.expires_at(boost::posix_time::pos_infin);
+    }
+    _deadline.async_wait(boost::bind(&discover::check_timeout, this));
+}
+
+void discover::handle_send_to(const boost::system::error_code& error, size_t bytes_sent)
+{
+    if(error)
+        std::cerr << "error: " <<  error.value() << "(" << error.message() << ")"
+            << " sent: " << bytes_sent << std::endl;
+
     _socket.async_receive_from(
         boost::asio::buffer(_data, MAX_UDP_MESSAGE_LEN), _sender_address,
         boost::bind(&discover::handle_receive_from, this,
@@ -129,7 +144,7 @@ void discover::handle_receive_from(const boost::system::error_code& error, size_
         ++_count;
     }
 
-    // count reached?
+    // max count reached?
     if(_max_count && _count == _max_count)
     {
         stop();
@@ -151,23 +166,6 @@ void discover::handle_receive_from(const boost::system::error_code& error, size_
         boost::bind(&discover::handle_receive_from, this,
             boost::asio::placeholders::error,
             boost::asio::placeholders::bytes_transferred));
-}
-
-void discover::check_timeout()
-{
-    if(_deadline.expires_at() <= boost::asio::deadline_timer::traits_type::now())
-    {
-        stop();
-        _deadline.expires_at(boost::posix_time::pos_infin);
-    }
-    _deadline.async_wait(boost::bind(&discover::check_timeout, this));
-}
-
-void discover::handle_receive(const boost::system::error_code& error, size_t bytes_recvd,
-    boost::system::error_code* out_error, size_t* out_bytes_recvd)
-{
-    *out_error = error;
-    *out_bytes_recvd = bytes_recvd;
 }
 
 } // namespace addp

@@ -30,12 +30,9 @@ public:
     const std::list<packet>& packets() const;
 
 private:
+    void check_timeout();
     void handle_send_to(const boost::system::error_code& error, size_t bytes_sent);
     void handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd);
-
-    void check_timeout();
-    static void handle_receive(const boost::system::error_code& ec, size_t bytes_recvd,
-        boost::system::error_code* out_ec, size_t* out_bytes_recvd);
 
     boost::asio::io_service _io_service;
     boost::asio::ip::udp::endpoint _listen;
