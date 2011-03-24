@@ -99,8 +99,8 @@ template<typename T>
 T field::value() const
 {
     T t;
-    if(_payload.size() == T::len)
-        copy(_payload.begin(), _payload.end(), reinterpret_cast<uint8_t*>(&t.data));
+    if(_payload.size() == t.size())
+        copy(_payload.begin(), _payload.end(), t.begin());
     return t;
 }
 
@@ -181,12 +181,6 @@ size_t field::size() const
 const std::vector<uint8_t>& field::payload() const
 {
     return _payload;
-}
-
-void field::add_raw(const uint8_t* data, size_t len)
-{
-    copy(data, data+len, back_inserter(_payload));
-    _header.size = htons(_payload.size());
 }
 
 std::vector<uint8_t> field::raw() const

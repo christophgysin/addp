@@ -54,9 +54,16 @@ const std::vector<uint8_t>& packet::payload() const
     return _payload;
 }
 
-void packet::add_raw(const uint8_t* data, size_t len)
+template<> void packet::add(const field::bool_flag& data)
 {
-    copy(data, data+len, back_inserter(_payload));
+    _payload.push_back(data);
+    _header.size = htons(_payload.size());
+}
+
+template<> void packet::add(const std::string& str)
+{
+    const uint8_t* data = reinterpret_cast<const uint8_t*>(str.data());
+    copy(data, data+str.size(), back_inserter(_payload));
     _header.size = htons(_payload.size());
 }
 

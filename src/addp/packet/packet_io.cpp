@@ -1,6 +1,7 @@
 #include "packet_io.h"
 
 #include <iomanip>
+#include <boost/foreach.hpp>
 
 #include "field_io.h"
 

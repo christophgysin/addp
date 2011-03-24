@@ -7,7 +7,7 @@
 #include <vector>
 #include <algorithm>
 
-#include <boost/foreach.hpp>
+#include <boost/array.hpp>
 
 #include "field.h"
 
@@ -46,7 +46,12 @@ public:
     std::string type_str() const;
 
     uint16_t size() const;
-    void add_raw(const uint8_t* data, size_t len);
+    template<class T> void add(const T& data);
+    template<class T, std::size_t N> void add(const boost::array<T, N>& data)
+    {
+        copy(data.begin(), data.end(), back_inserter(_payload));
+        _header.size = htons(_payload.size());
+    }
     const std::vector<uint8_t>& payload() const;
     std::vector<uint8_t> raw() const;
 

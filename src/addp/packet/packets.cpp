@@ -7,7 +7,7 @@ discovery_request::discovery_request(
         ) :
     packet(packet::PT_DISCOVERY_REQUEST)
 {
-    add_raw(mac.data, mac.len);
+    add(mac);
 }
 
 discovery_response::discovery_response() :
@@ -24,11 +24,11 @@ static_net_config_request::static_net_config_request(
         ) :
     packet(packet::PT_STATIC_NET_CONFIG_REQUEST)
 {
-    add_raw(ip.data, ip.len);
-    add_raw(subnet.data, subnet.len);
-    add_raw(gateway.data, gateway.len);
-    add_raw(mac.data, mac.len);
-    add_raw(reinterpret_cast<const uint8_t*>(auth.data()), auth.size());
+    add(ip);
+    add(subnet);
+    add(gateway);
+    add(mac);
+    add(auth);
 }
 
 static_net_config_response::static_net_config_response() :
@@ -42,8 +42,8 @@ reboot_request::reboot_request(
         ) :
     packet(packet::PT_REBOOT_REQUEST)
 {
-    add_raw(mac.data, mac.len);
-    add_raw(reinterpret_cast<const uint8_t*>(auth.data()), auth.size());
+    add(mac);
+    add(auth);
 }
 
 reboot_response::reboot_response() :
@@ -58,10 +58,9 @@ dhcp_net_config_request::dhcp_net_config_request(
         ) :
     packet(packet::PT_DHCP_NET_CONFIG_REQUEST)
 {
-    uint8_t value = field::bool_flag(enable ? field::BF_TRUE : field::BF_FALSE);
-    add_raw(&value, sizeof(value));
-    add_raw(mac.data, mac.len);
-    add_raw(reinterpret_cast<const uint8_t*>(auth.data()), auth.size());
+    add(enable ? field::BF_TRUE : field::BF_FALSE);
+    add(mac);
+    add(auth);
 }
 
 dhcp_net_config_response::dhcp_net_config_response() :

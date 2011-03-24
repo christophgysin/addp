@@ -2,27 +2,13 @@
 #define ADDP_TYPES_H
 
 #include <stdint.h>
-#include <cstddef>
+#include <boost/array.hpp>
 
 namespace addp {
 
-struct ip_address
-{
-    static const size_t len = 4;
-    uint8_t data[len];
-};
-
-struct mac_address
-{
-    static const size_t len = 6;
-    uint8_t data[len];
-};
-
-struct guid
-{
-    static const size_t len = 16;
-    uint8_t data[len];
-};
+typedef boost::array<uint8_t, 4> ip_address;
+typedef boost::array<uint8_t, 6> mac_address;
+typedef boost::array<uint8_t, 16> guid;
 
 } // namespace addp
 

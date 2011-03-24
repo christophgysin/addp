@@ -1,3 +1,3 @@
 - different verbosity levels (0=brief, 1=verbose, 2=debug, etc)
 - daemon to respond to addp requests
-- more packet types (static/dhcp net config, reboot)
+- more actions (static/dhcp net config, reboot)
