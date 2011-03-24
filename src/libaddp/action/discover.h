@@ -1,32 +1,32 @@
-#ifndef ADDPC_DISCOVER_H
-#define ADDPC_DISCOVER_H
+#ifndef ADDP_DISCOVER_H
+#define ADDP_DISCOVER_H
 
 #include <list>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/udp.hpp>
 #include <boost/asio/deadline_timer.hpp>
 
-#include <addp.h>
-#include <types.h>
-#include <packet.h>
+#include "addp.h"
+#include "types.h"
+#include "packet.h"
 
-namespace addpc {
+namespace addp {
 
 class discover
 {
 public:
     discover(const std::string& listen, uint16_t port,
-            const addp::mac_address& mac_address = addp::MAC_ADDR_BROADCAST);
+            const mac_address& mac_address = MAC_ADDR_BROADCAST);
 
     void set_verbose(bool verbose);
-    void set_mac_address(const addp::mac_address& mac_address);
-    void set_mcast_address(const std::string& mcast_address, uint16_t port = addp::UDP_PORT);
+    void set_mac_address(const mac_address& mac_address);
+    void set_mcast_address(const std::string& mcast_address, uint16_t port = UDP_PORT);
     void set_timeout(ssize_t timeout_ms);
     void set_max_count(ssize_t max_count);
 
     bool run();
 
-    const std::list<addp::packet>& packets() const;
+    const std::list<packet>& packets() const;
 
 private:
     void handle_send_to(const boost::system::error_code& error, size_t bytes_sent);
@@ -42,17 +42,17 @@ private:
     boost::asio::ip::udp::endpoint _mcast_address;
     boost::asio::ip::udp::endpoint _sender_address;
     boost::asio::deadline_timer _deadline;
-    boost::array<uint8_t, addp::MAX_UDP_MESSAGE_LEN> _data;
+    boost::array<uint8_t, MAX_UDP_MESSAGE_LEN> _data;
 
-    addp::mac_address _mac_address;
+    mac_address _mac_address;
     ssize_t _count;
     ssize_t _max_count;
     ssize_t _timeout_ms;
     bool _verbose;
 
-    std::list<addp::packet> _packets;
+    std::list<packet> _packets;
 };
 
-} // namespace addpc
+} // namespace addp
 
-#endif // ADDPC_DISCOVER_H
+#endif // ADDP_DISCOVER_H

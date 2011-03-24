@@ -1,5 +1,7 @@
 #include "field_io.h"
 
+namespace addp {
+
 std::ostream& operator<<(std::ostream& os, const addp::field& field)
 {
 #ifdef ADDP_FIELD_DEBUG
@@ -19,3 +21,5 @@ std::ostream& operator<<(std::ostream& os, const addp::field& field)
 
     return os << field.type_str() << " = " << field.value_str() << std::endl;
 }
+
+} // namespace addp

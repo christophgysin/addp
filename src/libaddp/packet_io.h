@@ -5,6 +5,10 @@
 
 #include "packet.h"
 
+namespace addp {
+
 std::ostream& operator<<(std::ostream& os, const addp::packet& packet);
+
+} // namespace addp
 
 #endif // ADDP_PACKET_IO_H

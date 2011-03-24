@@ -6,18 +6,18 @@
 #include <boost/asio/placeholders.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include <packets.h>
-#include <packet_io.h>
+#include "packets.h"
+#include "packet_io.h"
 
-namespace addpc {
+namespace addp {
 
-discover::discover(const std::string& listen, uint16_t port, const addp::mac_address& mac_address) :
+discover::discover(const std::string& listen, uint16_t port, const mac_address& mac_address) :
     _io_service(),
     _listen(boost::asio::ip::address::from_string(listen), port),
     _socket(_io_service, _listen),
     _mcast_address(
-            boost::asio::ip::address::from_string(addp::MCAST_IP_ADDRESS),
-            addp::UDP_PORT),
+            boost::asio::ip::address::from_string(MCAST_IP_ADDRESS),
+            UDP_PORT),
     _sender_address(),
     _deadline(_socket.io_service()),
     _mac_address(mac_address),
@@ -31,7 +31,7 @@ discover::discover(const std::string& listen, uint16_t port, const addp::mac_add
     check_timeout();
 }
 
-void discover::set_mac_address(const addp::mac_address& mac_address)
+void discover::set_mac_address(const mac_address& mac_address)
 {
     _mac_address = mac_address;
 }
@@ -60,11 +60,7 @@ void discover::set_verbose(bool verbose)
 
 bool discover::run()
 {
-    addp::discovery_request request;
-
-    boost::asio::ip::udp::endpoint endpoint(
-        boost::asio::ip::address::from_string(addp::MCAST_IP_ADDRESS),
-        addp::UDP_PORT);
+    discovery_request request;
 
     if(_verbose)
         std::cout << "sending to: " << _mcast_address << " packet: " << request
@@ -97,7 +93,7 @@ bool discover::run()
     return true;
 }
 
-const std::list<addp::packet>& discover::packets() const
+const std::list<packet>& discover::packets() const
 {
     return _packets;
 }
@@ -105,7 +101,7 @@ const std::list<addp::packet>& discover::packets() const
 void discover::handle_send_to(const boost::system::error_code& /*error*/, size_t /*bytes_sent*/)
 {
     _socket.async_receive_from(
-        boost::asio::buffer(_data, addp::MAX_UDP_MESSAGE_LEN), _sender_address,
+        boost::asio::buffer(_data, MAX_UDP_MESSAGE_LEN), _sender_address,
         boost::bind(&discover::handle_receive_from, this,
             boost::asio::placeholders::error,
             boost::asio::placeholders::bytes_transferred));
@@ -115,7 +111,7 @@ void discover::handle_receive_from(const boost::system::error_code& error, size_
 {
     if(!error && bytes_recvd > 0)
     {
-        addp::packet response(_data.data(), bytes_recvd);
+        packet response(_data.data(), bytes_recvd);
 
         if(!response.parse_fields())
             std::cerr << "failed to parse fields!" << std::endl;
@@ -142,7 +138,7 @@ void discover::handle_receive_from(const boost::system::error_code& error, size_
 
     // continue receiving
     _socket.async_receive_from(
-        boost::asio::buffer(_data, addp::MAX_UDP_MESSAGE_LEN), _sender_address,
+        boost::asio::buffer(_data, MAX_UDP_MESSAGE_LEN), _sender_address,
         boost::bind(&discover::handle_receive_from, this,
             boost::asio::placeholders::error,
             boost::asio::placeholders::bytes_transferred));
@@ -166,4 +162,4 @@ void discover::handle_receive(const boost::system::error_code& error, size_t byt
     *out_bytes_recvd = bytes_recvd;
 }
 
-} // namespace addpc
+} // namespace addp

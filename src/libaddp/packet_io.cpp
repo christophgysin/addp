@@ -1,7 +1,10 @@
 #include "packet_io.h"
-#include "field_io.h"
 
 #include <iomanip>
+
+#include "field_io.h"
+
+namespace addp {
 
 std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
 {
@@ -41,3 +44,5 @@ std::ostream& operator<<(std::ostream& os, const addp::packet& packet)
 
     return os;
 }
+
+} // namespace addp
