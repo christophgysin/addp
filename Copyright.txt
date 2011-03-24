@@ -1,1 +1,0 @@
-Copyright (C) 2011 Christoph Gysin <christoph.gysin@fr33z3.org>
