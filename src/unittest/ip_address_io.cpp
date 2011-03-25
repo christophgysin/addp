@@ -1,13 +1,11 @@
 #include <sstream>
 #include <string>
 #include <limits>
-#include <boost/numeric/conversion/converter_policies.hpp>
-
 #define BOOST_TEST_MODULE type_io_tests
 #include <boost/test/included/unit_test.hpp>
-
+#include <boost/numeric/conversion/converter_policies.hpp>
+#include <boost/lexical_cast.hpp>
 #include <addp/types_io.h>
-using namespace addp;
 
 BOOST_AUTO_TEST_SUITE( ip_address_io_suite )
 
@@ -24,6 +22,22 @@ BOOST_AUTO_TEST_CASE( ip_address_parse )
     addp::ip_address ip;
     std::istringstream is("192.168.1.1");
     is >> ip;
+    BOOST_CHECK_EQUAL(ip[0], 192);
+    BOOST_CHECK_EQUAL(ip[1], 168);
+    BOOST_CHECK_EQUAL(ip[2], 1);
+    BOOST_CHECK_EQUAL(ip[3], 1);
+}
+
+BOOST_AUTO_TEST_CASE( ip_address_format_lexical_cast )
+{
+    addp::ip_address ip = {{ 192, 168, 1, 1 }};
+    std::string str(boost::lexical_cast<std::string>(ip));
+    BOOST_CHECK_EQUAL(str, "192.168.1.1");
+}
+
+BOOST_AUTO_TEST_CASE( ip_address_parse_lexical_cast )
+{
+    addp::ip_address ip = boost::lexical_cast<addp::ip_address>("192.168.1.1");
     BOOST_CHECK_EQUAL(ip[0], 192);
     BOOST_CHECK_EQUAL(ip[1], 168);
     BOOST_CHECK_EQUAL(ip[2], 1);

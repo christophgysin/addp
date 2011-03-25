@@ -10,9 +10,9 @@
 
 #include <iostream>
 
-namespace addp {
+namespace std {
 
-std::ostream& operator<<(std::ostream& os, const ip_address& ip_addr)
+std::ostream& operator<<(std::ostream& os, const addp::ip_address& ip_addr)
 {
     os << std::dec;
 
@@ -22,7 +22,7 @@ std::ostream& operator<<(std::ostream& os, const ip_address& ip_addr)
     return os;
 }
 
-std::istream& operator>>(std::istream& is, ip_address& ip_addr)
+std::istream& operator>>(std::istream& is, addp::ip_address& ip_addr)
 {
     std::string str;
     is >> str;
@@ -39,7 +39,7 @@ std::istream& operator>>(std::istream& is, ip_address& ip_addr)
     return is;
 }
 
-std::ostream& operator<<(std::ostream& os, const mac_address& mac_addr)
+std::ostream& operator<<(std::ostream& os, const addp::mac_address& mac_addr)
 {
     os << std::hex << std::setfill('0') << std::nouppercase;
 
@@ -50,7 +50,7 @@ std::ostream& operator<<(std::ostream& os, const mac_address& mac_addr)
     return os;
 }
 
-std::istream& operator>>(std::istream& is, mac_address& mac_addr)
+std::istream& operator>>(std::istream& is, addp::mac_address& mac_addr)
 {
     std::string str;
     is >> str;
@@ -81,7 +81,7 @@ std::istream& operator>>(std::istream& is, mac_address& mac_addr)
     return is;
 }
 
-std::ostream& operator<<(std::ostream& os, const guid& guid)
+std::ostream& operator<<(std::ostream& os, const addp::guid& guid)
 {
     os << std::hex << std::setfill('0');
 
@@ -101,4 +101,4 @@ std::ostream& operator<<(std::ostream& os, const guid& guid)
     return os;
 }
 
-} // namespace addp
+} // namespace std

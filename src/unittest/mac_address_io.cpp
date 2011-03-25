@@ -1,13 +1,11 @@
 #include <sstream>
 #include <string>
 #include <limits>
-#include <boost/numeric/conversion/converter_policies.hpp>
-
 #define BOOST_TEST_MODULE type_io_tests
 #include <boost/test/included/unit_test.hpp>
-
+#include <boost/numeric/conversion/converter_policies.hpp>
+#include <boost/lexical_cast.hpp>
 #include <addp/types_io.h>
-using namespace addp;
 
 BOOST_AUTO_TEST_SUITE( mac_io_suite )
 
@@ -24,6 +22,24 @@ BOOST_AUTO_TEST_CASE( mac_address_parse )
     addp::mac_address mac;
     std::istringstream is("01:20:03:4d:fe:ef");
     is >> mac;
+    BOOST_CHECK_EQUAL(mac[0], 0x01);
+    BOOST_CHECK_EQUAL(mac[1], 0x20);
+    BOOST_CHECK_EQUAL(mac[2], 0x03);
+    BOOST_CHECK_EQUAL(mac[3], 0x4d);
+    BOOST_CHECK_EQUAL(mac[4], 0xfe);
+    BOOST_CHECK_EQUAL(mac[5], 0xef);
+}
+
+BOOST_AUTO_TEST_CASE( mac_address_format_lexical_cast )
+{
+    addp::mac_address mac = {{ 0x01, 0x20, 0x03, 0x4d, 0xfe, 0xef }};
+    std::string str(boost::lexical_cast<std::string>(mac));
+    BOOST_CHECK_EQUAL(str, "01:20:03:4d:fe:ef");
+}
+
+BOOST_AUTO_TEST_CASE( mac_address_parse_lexical_cast )
+{
+    addp::mac_address mac = boost::lexical_cast<addp::mac_address>("01:20:03:4d:fe:ef");
     BOOST_CHECK_EQUAL(mac[0], 0x01);
     BOOST_CHECK_EQUAL(mac[1], 0x20);
     BOOST_CHECK_EQUAL(mac[2], 0x03);

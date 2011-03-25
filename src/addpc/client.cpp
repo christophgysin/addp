@@ -37,7 +37,7 @@ bool client::run()
 bool client::discover()
 {
     addp::discover d(_options.listen(), _options.port());
-    //d.set_mac_address(...);
+    d.set_mac_address(_options.mac());
     d.set_mcast_address(_options.multicast(), _options.port());
     if(_options.max_count())
         d.set_max_count(_options.max_count());

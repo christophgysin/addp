@@ -8,10 +8,12 @@
 
 #include <addp/packet/discovery.h>
 #include <addp/packet/packet_io.h>
+#include <addp/types_io.h>
 
 namespace addp {
 
-discover::discover(const std::string& listen, uint16_t port, const mac_address& mac_address) :
+discover::discover(const std::string& listen, uint16_t port,
+        const mac_address& mac_address) :
     _io_service(),
     _listen(boost::asio::ip::address::from_string(listen), port),
     _socket(_io_service, _listen),
@@ -31,9 +33,9 @@ discover::discover(const std::string& listen, uint16_t port, const mac_address& 
     check_timeout();
 }
 
-void discover::set_mac_address(const mac_address& mac_address)
+void discover::set_mac_address(const std::string& mac)
 {
-    _mac_address = mac_address;
+    _mac_address = boost::lexical_cast<mac_address>(mac);
 }
 
 void discover::set_mcast_address(const std::string& mcast_address, uint16_t port)
@@ -60,7 +62,7 @@ void discover::set_verbose(bool verbose)
 
 bool discover::run()
 {
-    discovery_request request;
+    discovery_request request(_mac_address);
 
     if(_verbose)
         std::cout << "sending to: " << _mcast_address << " packet: " << request

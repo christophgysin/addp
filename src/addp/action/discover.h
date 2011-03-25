@@ -19,7 +19,7 @@ public:
             const mac_address& mac_address = MAC_ADDR_BROADCAST);
 
     void set_verbose(bool verbose);
-    void set_mac_address(const mac_address& mac_address);
+    void set_mac_address(const std::string& mac);
     void set_mcast_address(const std::string& mcast_address, uint16_t port = UDP_PORT);
     void set_timeout(ssize_t timeout_ms);
     void set_max_count(ssize_t max_count);

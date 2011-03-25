@@ -18,6 +18,8 @@ public:
     uint16_t port() const;
     std::string multicast() const;
 
+    std::string mac() const;
+
     ssize_t timeout() const;
     ssize_t max_count() const;
 
