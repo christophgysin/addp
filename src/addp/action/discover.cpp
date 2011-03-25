@@ -6,7 +6,7 @@
 #include <boost/asio/placeholders.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-#include <addp/packet/packets.h>
+#include <addp/packet/discovery.h>
 #include <addp/packet/packet_io.h>
 
 namespace addp {
