@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <boost/foreach.hpp>
 
-#include "field_io.h"
+#include <addp/packet/field_io.h>
 
 namespace addp {
 

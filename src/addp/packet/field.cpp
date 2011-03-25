@@ -6,7 +6,7 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
-#include "types_io.h"
+#include <addp/types_io.h>
 
 namespace addp {
 

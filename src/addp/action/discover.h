@@ -6,9 +6,9 @@
 #include <boost/asio/ip/udp.hpp>
 #include <boost/asio/deadline_timer.hpp>
 
-#include "constants.h"
-#include "types.h"
-#include "packet/packet.h"
+#include <addp/constants.h>
+#include <addp/types.h>
+#include <addp/packet/packet.h>
 
 namespace addp {
 

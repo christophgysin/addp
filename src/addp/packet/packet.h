@@ -6,10 +6,9 @@
 #include <cstring>
 #include <vector>
 #include <algorithm>
-
 #include <boost/array.hpp>
 
-#include "field.h"
+#include <addp/packet/field.h>
 
 namespace addp {
 

@@ -3,7 +3,7 @@
 
 #include <ostream>
 
-#include "packet.h"
+#include <addp/packet/packet.h>
 
 namespace addp {
 

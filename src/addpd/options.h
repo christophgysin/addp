@@ -3,7 +3,7 @@
 
 #include <string>
 #include <boost/program_options.hpp>
-#include <addp.h>
+#include <addp/addp.h>
 
 namespace addpd {
 

@@ -1,7 +1,7 @@
 #include "client.h"
 
 #include <iostream>
-#include <addp.h>
+#include <addp/addp.h>
 
 #include "options.h"
 

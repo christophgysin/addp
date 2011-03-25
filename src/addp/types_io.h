@@ -4,7 +4,7 @@
 #include <ostream>
 #include <istream>
 
-#include "types.h"
+#include <addp/types.h>
 
 namespace addp {
 

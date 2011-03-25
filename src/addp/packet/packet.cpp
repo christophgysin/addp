@@ -70,6 +70,7 @@ template<> void packet::add(const std::string& str)
 std::vector<uint8_t> packet::raw() const
 {
     std::vector<uint8_t> buffer;
+    buffer.reserve(sizeof(_header) + _payload.size());
     const uint8_t* headerp = reinterpret_cast<const uint8_t*>(&_header);
     copy(headerp, headerp+sizeof(_header), back_inserter(buffer));
     copy(_payload.begin(), _payload.end(), back_inserter(buffer));
