@@ -3,10 +3,12 @@
 #include <iomanip>
 #include <string>
 #include <vector>
-#include <typeinfo>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/numeric/conversion/cast.hpp>
+
+#include <iostream>
 
 namespace addp {
 
@@ -29,20 +31,21 @@ std::istream& operator>>(std::istream& is, ip_address& ip_addr)
     boost::algorithm::split(tokens, str, boost::is_any_of("."));
 
     if(tokens.size() != ip_addr.size())
-        throw std::bad_cast();
+        throw boost::bad_lexical_cast();
 
     for(size_t i=0; i<ip_addr.size(); i++)
-        ip_addr[i] = boost::lexical_cast<uint8_t>(tokens[i]);
+        ip_addr[i] = boost::numeric_cast<uint8_t>(boost::lexical_cast<int>(tokens[i]));
 
     return is;
 }
 
 std::ostream& operator<<(std::ostream& os, const mac_address& mac_addr)
 {
-    os << std::hex << std::setfill('0');
+    os << std::hex << std::setfill('0') << std::nouppercase;
 
     for(size_t i=0; i<mac_addr.size(); ++i)
-        os << (i ? ":" : "") << std::setw(2) << int(mac_addr[i]);
+        os << (i ? ":" : "") << std::setw(2)
+           << boost::numeric_cast<int>(mac_addr[i]);
 
     return os;
 }
@@ -56,10 +59,24 @@ std::istream& operator>>(std::istream& is, mac_address& mac_addr)
     boost::algorithm::split(tokens, str, boost::is_any_of(":"));
 
     if(tokens.size() != mac_addr.size())
-        throw std::bad_cast();
+        throw boost::bad_lexical_cast();
 
     for(size_t i=0; i<mac_addr.size(); i++)
-        mac_addr[i] = boost::lexical_cast<uint8_t>(tokens[i]);
+    {
+        int value;
+
+        // parse hex values
+        std::stringstream ss;
+        ss << std::hex << tokens[i];
+        ss >> value;
+
+        // convert them to one byte, checking overflow
+        mac_addr[i] = boost::numeric_cast<uint8_t>(value);
+
+        // make sure there's no trailing garbage
+        if(!ss.eof())
+            throw boost::bad_lexical_cast();
+    }
 
     return is;
 }
