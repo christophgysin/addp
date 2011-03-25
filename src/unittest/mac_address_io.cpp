@@ -11,16 +11,33 @@ using namespace addp;
 
 BOOST_AUTO_TEST_SUITE( type_io_suite )
 
+BOOST_AUTO_TEST_CASE( mac_address_format )
+{
+    addp::mac_address mac = {{ 0x01, 0x20, 0x03, 0x4d, 0xfe, 0xef }};
+    std::ostringstream os;
+    os << mac;
+    BOOST_CHECK_EQUAL(os.str(), "01:20:03:4d:fe:ef");
+}
+
+BOOST_AUTO_TEST_CASE( mac_address_parse )
+{
+    addp::mac_address mac;
+    std::istringstream is("01:20:03:4d:fe:ef");
+    is >> mac;
+    BOOST_CHECK_EQUAL(mac[0], 0x01);
+    BOOST_CHECK_EQUAL(mac[1], 0x20);
+    BOOST_CHECK_EQUAL(mac[2], 0x03);
+    BOOST_CHECK_EQUAL(mac[3], 0x4d);
+    BOOST_CHECK_EQUAL(mac[4], 0xfe);
+    BOOST_CHECK_EQUAL(mac[5], 0xef);
+}
+
 BOOST_AUTO_TEST_CASE( mac_address_parse_single_values )
 {
     addp::mac_address mac;
-    std::istringstream is;
-    std::ostringstream os;
-
-    is.str("1:2:3:7:8:9");
-    BOOST_CHECKPOINT("1");
+    std::istringstream is("1:2:3:7:8:9");
     is >> mac;
-    BOOST_CHECKPOINT("2");
+    std::ostringstream os;
     os << mac;
     BOOST_CHECK_EQUAL(os.str(), "01:02:03:07:08:09");
 }

@@ -9,7 +9,7 @@ T = all help \
 	test \
 	addp addpc addpd
 
-default: config all
+default: config all test
 
 config:
 	(mkdir -p ${B} && cd ${B} && cmake ..)
