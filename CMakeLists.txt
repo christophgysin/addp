@@ -4,6 +4,7 @@ project(addp)
 include(cmake/dependencies.cmake)
 include(cmake/version.cmake)
 include(cmake/packaging.cmake)
+include(cmake/testing.cmake)
 
 message("addp version: " ${ADDP_VERSION})
 

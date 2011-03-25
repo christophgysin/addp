@@ -6,6 +6,7 @@ T = all help \
 	list_install_components \
 	package package_source \
 	rebuild_cache \
+	test \
 	addp addpc addpd
 
 default: config all
