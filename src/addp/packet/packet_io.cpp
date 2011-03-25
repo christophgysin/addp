@@ -38,7 +38,6 @@ std::ostream& operator<<(std::ostream& os, const packet& packet)
                 os << (i ? ":" : " ") << int(payload[i]);
             break;
         }
-
         default:
             break;
     }

@@ -39,6 +39,9 @@ boost::program_options::options_description options::all_options()
         ("mac,M",
             boost::program_options::value<std::string>()->default_value("ff:ff:ff:ff:ff:ff"),
             "mac address of target device")
+        ("password,p",
+            boost::program_options::value<std::string>()->default_value(addp::DEFAULT_PASSWORD),
+            "device password")
     ;
 
     opts.add(addpc_opts);
@@ -85,5 +88,9 @@ std::string options::mac() const
     return _vm["mac"].as<std::string>();
 }
 
+std::string options::password() const
+{
+    return _vm["password"].as<std::string>();
+}
 
 } // namespace addpc

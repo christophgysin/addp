@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 
 namespace addp {
 
@@ -62,6 +63,9 @@ template<> void packet::add(const field::bool_flag& data)
 
 template<> void packet::add(const std::string& str)
 {
+    // 1 byte length
+    _payload.push_back(boost::numeric_cast<uint8_t>(str.size()));
+
     const uint8_t* data = reinterpret_cast<const uint8_t*>(str.data());
     copy(data, data+str.size(), back_inserter(_payload));
     _header.size = htons(_payload.size());

@@ -19,6 +19,7 @@ public:
     std::string multicast() const;
 
     std::string mac() const;
+    std::string password() const;
 
     ssize_t timeout() const;
     ssize_t max_count() const;
