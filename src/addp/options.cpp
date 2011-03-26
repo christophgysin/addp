@@ -1,6 +1,7 @@
 #include "options.h"
 
 #include <iostream>
+#include <sstream>
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 
@@ -14,38 +15,41 @@ options::options(int argc, char* argv[])
 void options::parse(int argc, char* argv[])
 {
     _progname = boost::filesystem::path(argv[0]).filename();
-
-    boost::program_options::options_description all_options = this->all_options();
-
-    boost::program_options::command_line_parser parser(argc, argv);
-    boost::program_options::store(parser.options(all_options).run(), _vm);
-    boost::program_options::notify(_vm);
-
-    if(_vm.count("help"))
-    {
-        std::cout << all_options << std::endl;
-        std::exit(1);
-    }
-}
-
-std::string options::usage()
-{
-    return str(boost::format(
+    _usage = str(boost::format(
                 "Usage: %s [options]...\n"
                 "\n"
                 "options")
             % _progname);
+
+    boost::program_options::options_description options = all_options();
+
+    boost::program_options::command_line_parser parser(argc, argv);
+    boost::program_options::store(parser.options(options).run(), _vm);
+    boost::program_options::notify(_vm);
+
+    if(_vm.count("help"))
+    {
+        std::cout << all_options() << std::endl;
+        std::exit(1);
+    }
 }
 
-boost::program_options::options_description options::all_options()
+std::string options::usage() const
+{
+    std::ostringstream os;
+    os << all_options();
+    return os.str();
+}
+
+boost::program_options::options_description options::all_options() const
 {
     boost::program_options::options_description options = generic_options();
     return options;
 }
 
-boost::program_options::options_description options::generic_options()
+boost::program_options::options_description options::generic_options() const
 {
-    boost::program_options::options_description options(usage());
+    boost::program_options::options_description options(_usage);
     options.add_options()
         ("help,h",
             "produce help message")

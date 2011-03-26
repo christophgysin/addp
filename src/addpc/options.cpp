@@ -7,7 +7,7 @@ options::options(int argc, char* argv[])
     parse(argc, argv);
 }
 
-boost::program_options::options_description options::all_options()
+boost::program_options::options_description options::all_options() const
 {
     boost::program_options::options_description opts = addp::options::all_options();
 

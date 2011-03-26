@@ -11,7 +11,9 @@ class options
 public:
     options(){}
     options(int argc, char* argv[]);
+
     void parse(int argc, char* argv[]);
+    std::string usage() const;
 
     size_t count(const char* key) const;
 
@@ -19,13 +21,15 @@ public:
     int verbose() const;
 
 protected:
-    virtual std::string usage();
-
-    virtual boost::program_options::options_description all_options();
-    virtual boost::program_options::options_description generic_options();
+    virtual boost::program_options::options_description all_options() const;
 
     boost::program_options::variables_map _vm;
+
+private:
+    virtual boost::program_options::options_description generic_options() const;
+
     std::string _progname;
+    std::string _usage;
 };
 
 } // namespace addp

@@ -29,7 +29,8 @@ bool client::run()
     if(_options.action() == "dhcp")
         return dhcp_net_config();
 
-    std::cerr << "Unknown option! (" << _options.action() << ")" << std::endl;
+    std::cerr << "Unknown action: " << _options.action() << std::endl;
+    std::cout << std::endl << _options.usage();
     return false;
 }
 

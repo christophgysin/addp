@@ -27,7 +27,7 @@ public:
     std::string action() const;
 
 protected:
-    virtual boost::program_options::options_description all_options();
+    virtual boost::program_options::options_description all_options() const;
 };
 
 } // namespace addpc
