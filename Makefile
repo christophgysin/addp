@@ -10,3 +10,6 @@ config:
 
 $(T):
 	(cd ${B} && make $@)
+
+clang:
+	make CC=/usr/bin/clang CXX=/usr/bin/clang++ default
