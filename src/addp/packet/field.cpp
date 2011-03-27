@@ -22,9 +22,11 @@ field::field(std::vector<uint8_t>::iterator& iter, const std::vector<uint8_t>::i
     std::advance(iter, sizeof(_header));
 
     // payload
-    _payload.clear();
-    copy(iter, iter+_header.size, back_inserter(_payload));
-    std::advance(iter, _header.size);
+    if(std::distance(iter, end) >= _header.size)
+    {
+        std::copy(iter, iter+_header.size, back_inserter(_payload));
+        std::advance(iter, _header.size);
+    }
 }
 
 bool field::check() const

@@ -11,7 +11,7 @@ message("addp version: " ${ADDP_VERSION})
 set(CMAKE_INSTALL_PREFIX /usr)
 set(CMAKE_BUILD_TYPE Release)
 
-set(CMAKE_CXX_FLAGS -Wall)
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG -g -O0)
 set(CMAKE_CXX_FLAGS_RELEASE -O2)
 
