@@ -1,0 +1,4 @@
+- handle wrong arguments properly:
+$ bin/src/addpc/addpc -v
+terminate called without an active exception
+Aborted
