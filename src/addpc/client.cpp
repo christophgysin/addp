@@ -34,19 +34,22 @@ bool client::run()
     return false;
 }
 
+bool client::run_action(addp::action& action)
+{
+    action.set_verbose(_options.verbose() > 0);
+    action.set_dest_address(_options.multicast(), _options.port());
+    action.set_timeout(_options.timeout());
+    action.set_max_count(_options.max_count());
+
+    return action.run();
+}
 
 bool client::discover()
 {
-    addp::discover d(_options.listen(), _options.port());
-    d.set_mac_address(_options.mac());
-    d.set_mcast_address(_options.multicast(), _options.port());
-    if(_options.max_count())
-        d.set_max_count(_options.max_count());
-    if(_options.timeout())
-        d.set_timeout(_options.timeout());
-    d.set_verbose(_options.verbose() > 0);
-    d.run();
-    return true;
+    addp::discover action;
+    action.set_mac_address(_options.mac());
+
+    return run_action(action);
 }
 
 bool client::static_net_config()
@@ -56,17 +59,11 @@ bool client::static_net_config()
 
 bool client::reboot()
 {
-    addp::reboot d(_options.listen(), _options.port());
-    d.set_mac_address(_options.mac());
-    d.set_password(_options.password());
-    d.set_mcast_address(_options.multicast(), _options.port());
-    if(_options.max_count())
-        d.set_max_count(_options.max_count());
-    if(_options.timeout())
-        d.set_timeout(_options.timeout());
-    d.set_verbose(_options.verbose() > 0);
-    d.run();
-    return false;
+    addp::reboot action;
+    action.set_mac_address(_options.mac());
+    action.set_password(_options.password());
+
+    return run_action(action);
 }
 
 bool client::dhcp_net_config()

@@ -28,10 +28,10 @@ boost::program_options::options_description options::all_options() const
             boost::program_options::value<std::string>()->default_value(addp::MCAST_IP_ADDRESS),
             "multicast address for discovery")
         ("timeout,t",
-            boost::program_options::value<ssize_t>()->default_value(2000),
+            boost::program_options::value<ssize_t>()->default_value(addp::DEFAULT_TIMEOUT),
             "response timeout (in ms)")
         ("max_count,c",
-            boost::program_options::value<ssize_t>()->default_value(0),
+            boost::program_options::value<ssize_t>()->default_value(addp::DEFAULT_MAX_COUNT),
             "stop after receiving n responses")
         ("action,a",
             boost::program_options::value<std::string>()->default_value("discover"),

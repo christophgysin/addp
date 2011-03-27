@@ -4,6 +4,8 @@
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/udp.hpp>
 
+#include <addp/action/action.h>
+
 #include "options.h"
 
 namespace addpc {
@@ -14,6 +16,7 @@ public:
     client(const options& options);
 
     bool run();
+    bool run_action(addp::action& action);
 
     // actions
     bool discover();
