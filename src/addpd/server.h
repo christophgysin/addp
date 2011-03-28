@@ -9,14 +9,19 @@
 class server
 {
 public:
-    server(boost::asio::io_service& io_service, uint16_t port);
-    void handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd);
+    server(uint16_t port);
+
+    void run();
+    void stop();
 
 private:
-    boost::asio::io_service& _io_service;
-    boost::asio::ip::udp::endpoint _endpoint;
+    void handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd);
+
+    boost::asio::io_service _io_service;
+    boost::asio::ip::udp::endpoint _listen_address;
     boost::asio::ip::udp::socket _socket;
-    boost::asio::ip::udp::endpoint _sender;
+    size_t _thread_count;
+    boost::asio::ip::udp::endpoint _sender_address;
     boost::array<uint8_t, 4096> _data;
 };
 
