@@ -2,6 +2,7 @@
 #define ADDPD_SERVER_H
 
 #include <stdint.h>
+#include <string>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/udp.hpp>
 #include <boost/system/system_error.hpp>
@@ -9,7 +10,7 @@
 class server
 {
 public:
-    server(uint16_t port);
+    server(const std::string& listen_ip, uint16_t port);
 
     void run();
     void stop();

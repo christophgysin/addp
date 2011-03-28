@@ -9,9 +9,9 @@
 
 #include "connection.h"
 
-server::server(uint16_t port) :
+server::server(const std::string& listen_ip, uint16_t port) :
     _io_service(),
-    _listen_address(boost::asio::ip::udp::v4(), port),
+    _listen_address(boost::asio::ip::address::from_string(listen_ip), port),
     _socket(_io_service, _listen_address),
     _thread_count(4)
 {
