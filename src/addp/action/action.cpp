@@ -17,7 +17,7 @@ action::action(const packet& request) :
     _dest_address(boost::asio::ip::address::from_string(MCAST_IP_ADDRESS), UDP_PORT),
     _sender_address(),
     _io_service(),
-    _socket(_io_service, _listen_address),
+    _socket(_io_service),
     _deadline(_socket.io_service()),
     _request(request),
     _count(0),
@@ -64,6 +64,9 @@ void action::set_verbose(bool verbose)
 
 bool action::run()
 {
+    _socket.open(boost::asio::ip::udp::v4());
+    _socket.bind(_listen_address);
+
     if(_verbose)
         std::cout << "sending to: " << _dest_address << " packet: " << _request
             << std::endl << std::endl;

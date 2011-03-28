@@ -48,6 +48,7 @@ bool client::run_action(addp::action& action)
 bool client::discover()
 {
     addp::discover action;
+    action.set_listen_address(_options.listen(), _options.port());
     action.set_mac_address(_options.mac());
 
     return run_action(action);
