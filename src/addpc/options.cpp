@@ -11,7 +11,7 @@ boost::program_options::options_description options::all_options() const
 {
     boost::program_options::options_description opts = addp::options::all_options();
 
-    const std::string usage = "ADDPC options";
+    const std::string usage = "ADDP client options";
 
     boost::program_options::options_description addpc_opts(usage);
     addpc_opts.add_options()

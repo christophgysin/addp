@@ -11,7 +11,7 @@ boost::program_options::options_description options::all_options() const
 {
     boost::program_options::options_description opts = addp::options::all_options();
 
-    const std::string usage = "ADDPD options";
+    const std::string usage = "ADDP daemon options";
 
     boost::program_options::options_description addpd_opts(usage);
     addpd_opts.add_options()
