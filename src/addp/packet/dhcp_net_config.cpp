@@ -2,11 +2,8 @@
 
 namespace addp {
 
-dhcp_net_config_request::dhcp_net_config_request(
-        bool enable,
-        const mac_address& mac,
-        const std::string& auth
-        ) :
+dhcp_net_config_request::dhcp_net_config_request(const mac_address& mac, bool enable,
+        const std::string& auth) :
     packet(packet::PT_DHCP_NET_CONFIG_REQUEST)
 {
     add(enable ? field::BF_TRUE : field::BF_FALSE);

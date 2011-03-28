@@ -2,13 +2,9 @@
 
 namespace addp {
 
-static_net_config_request::static_net_config_request(
-        const ip_address& ip,
-        const ip_address& subnet,
-        const ip_address& gateway,
-        const mac_address& mac,
-        const std::string& auth
-        ) :
+static_net_config_request::static_net_config_request(const mac_address& mac,
+        const ip_address& ip, const ip_address& subnet,
+        const ip_address& gateway, const std::string& auth) :
     packet(packet::PT_STATIC_NET_CONFIG_REQUEST)
 {
     add(ip);

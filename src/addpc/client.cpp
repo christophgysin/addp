@@ -1,6 +1,7 @@
 #include "client.h"
 
 #include <iostream>
+#include <boost/lexical_cast.hpp>
 #include <addp/addp.h>
 
 #include "options.h"
@@ -24,10 +25,10 @@ bool client::run()
         return discover();
     if(_options.action() == "static")
         return static_net_config();
-    if(_options.action() == "reboot")
-        return reboot();
     if(_options.action() == "dhcp")
         return dhcp_net_config();
+    if(_options.action() == "reboot")
+        return reboot();
 
     std::cerr << "Unknown action: " << _options.action() << std::endl;
     std::cout << std::endl << _options.usage();
@@ -54,13 +55,12 @@ bool client::discover()
 
 bool client::static_net_config()
 {
-    return false;
-}
-
-bool client::reboot()
-{
-    addp::reboot action;
-    action.set_mac_address(_options.mac());
+    addp::mac_address mac_address = boost::lexical_cast<addp::mac_address>(_options.mac());
+    // TODO: get options from arguments
+    addp::ip_address ip = boost::lexical_cast<addp::ip_address>("10.20.30.40");
+    addp::ip_address subnet = boost::lexical_cast<addp::ip_address>("255.0.0.0");
+    addp::ip_address gateway = boost::lexical_cast<addp::ip_address>("10.0.0.1");
+    addp::static_net_config action(mac_address, ip, subnet, gateway);
     action.set_password(_options.password());
 
     return run_action(action);
@@ -68,7 +68,21 @@ bool client::reboot()
 
 bool client::dhcp_net_config()
 {
-    return false;
+    addp::mac_address mac_address = boost::lexical_cast<addp::mac_address>(_options.mac());
+    // TODO: get option from arguments
+    addp::dhcp_net_config action(mac_address, true);
+    action.set_password(_options.password());
+
+    return run_action(action);
+}
+
+bool client::reboot()
+{
+    addp::mac_address mac_address = boost::lexical_cast<addp::mac_address>(_options.mac());
+    addp::reboot action(mac_address);
+    action.set_password(_options.password());
+
+    return run_action(action);
 }
 
 } // namespace addpc

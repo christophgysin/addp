@@ -9,11 +9,8 @@ namespace addp {
 class dhcp_net_config_request : public packet
 {
 public:
-    dhcp_net_config_request(
-        bool enable,
-        const mac_address& mac = MAC_ADDR_BROADCAST,
-        const std::string& auth = DEFAULT_PASSWORD
-        );
+    dhcp_net_config_request(const mac_address& mac, bool enable,
+        const std::string& auth = DEFAULT_PASSWORD);
 };
 
 class dhcp_net_config_response : public packet
