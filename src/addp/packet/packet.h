@@ -1,5 +1,5 @@
-#ifndef ADDP_PACKET_H
-#define ADDP_PACKET_H
+#ifndef ADDP_PACKET_PACKET_H
+#define ADDP_PACKET_PACKET_H
 
 #include <stdint.h>
 #include <arpa/inet.h>
@@ -67,4 +67,4 @@ private:
 
 } // namespace addp
 
-#endif // ADDP_PACKET_H
+#endif // ADDP_PACKET_PACKET_H

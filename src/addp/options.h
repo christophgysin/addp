@@ -1,5 +1,5 @@
-#ifndef OPTIONS_H
-#define OPTIONS_H
+#ifndef ADDP_OPTIONS_H
+#define ADDP_OPTIONS_H
 
 #include <string>
 #include <boost/program_options.hpp>
@@ -34,4 +34,4 @@ private:
 
 } // namespace addp
 
-#endif // OPTIONS_H
+#endif // ADDP_OPTIONS_H

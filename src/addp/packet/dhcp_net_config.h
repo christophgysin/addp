@@ -1,5 +1,5 @@
-#ifndef ADDP_PACKETS_H
-#define ADDP_PACKETS_H
+#ifndef ADDP_PACKET_DHCP_NET_CONFIG_H
+#define ADDP_PACKET_DHCP_NET_CONFIG_H
 
 #include <addp/types.h>
 #include <addp/packet/packet.h>
@@ -24,4 +24,4 @@ public:
 
 } // namespace addp
 
-#endif // ADDP_PACKETS_H
+#endif // ADDP_PACKET_DHCP_NET_CONFIG_H

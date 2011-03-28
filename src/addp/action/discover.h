@@ -1,5 +1,5 @@
-#ifndef ADDP_DISCOVER_H
-#define ADDP_DISCOVER_H
+#ifndef ADDP_ACTION_DISCOVER_H
+#define ADDP_ACTION_DISCOVER_H
 
 #include <addp/constants.h>
 #include <addp/types.h>
@@ -17,4 +17,4 @@ public:
 
 } // namespace addp
 
-#endif // ADDP_DISCOVER_H
+#endif // ADDP_ACTION_DISCOVER_H

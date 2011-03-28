@@ -1,5 +1,5 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef ADDP_CONSTANTS_H
+#define ADDP_CONSTANTS_H
 
 #include <stdint.h>
 #include <string>
@@ -18,4 +18,4 @@ static const size_t DEFAULT_MAX_COUNT = 0;
 
 } // namespace addp
 
-#endif // CONSTANTS_H
+#endif // ADDP_CONSTANTS_H

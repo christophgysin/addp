@@ -1,5 +1,5 @@
-#ifndef ADDP_REBOOT_H
-#define ADDP_REBOOT_H
+#ifndef ADDP_ACTION_REBOOT_H
+#define ADDP_ACTION_REBOOT_H
 
 #include <addp/constants.h>
 #include <addp/types.h>
@@ -23,4 +23,4 @@ private:
 
 } // namespace addp
 
-#endif // ADDP_REBOOT_H
+#endif // ADDP_ACTION_REBOOT_H

@@ -1,5 +1,5 @@
-#ifndef ADDP_FIELD_H
-#define ADDP_FIELD_H
+#ifndef ADDP_PACKET_FIELD_H
+#define ADDP_PACKET_FIELD_H
 
 #include <stdint.h>
 #include <arpa/inet.h>
@@ -98,4 +98,4 @@ private:
 
 } // namespace addp
 
-#endif // ADDP_FIELD_H
+#endif // ADDP_PACKET_FIELD_H

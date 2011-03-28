@@ -1,5 +1,5 @@
-#ifndef ADDP_action_H
-#define ADDP_action_H
+#ifndef ADDP_ACTION_ACTION_H
+#define ADDP_ACTION_ACTION_H
 
 #include <list>
 #include <boost/asio/io_service.hpp>
@@ -50,4 +50,4 @@ private:
 
 } // namespace addp
 
-#endif // ADDP_action_H
+#endif // ADDP_ACTION_ACTION_H
