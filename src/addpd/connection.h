@@ -11,13 +11,16 @@ public:
     connection(boost::asio::ip::udp::socket& socket,
             const boost::asio::ip::udp::endpoint& endpoint,
             const addp::packet& request);
+
+private:
+    bool create_response(const addp::packet& request);
     void handle_request(const addp::packet& request);
     void handle_send_to(const boost::system::error_code& error, size_t bytes_sent);
 
-private:
     boost::asio::ip::udp::socket& _socket;
     const boost::asio::ip::udp::endpoint& _endpoint;
     boost::array<uint8_t, addp::MAX_UDP_MESSAGE_LEN> _data;
+    size_t _data_bytes;
 };
 
 #endif // ADDPD_CONNECTION_H

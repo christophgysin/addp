@@ -12,16 +12,13 @@ class options : public addp::options
 public:
     options(int argc, char* argv[]);
 
-    std::string logfile() const;
-
-    std::string listen() const;
-    uint16_t port() const;
     std::string multicast() const;
+
+    ssize_t timeout() const;
 
     std::string mac() const;
     std::string password() const;
 
-    ssize_t timeout() const;
     ssize_t max_count() const;
 
     std::string action() const;

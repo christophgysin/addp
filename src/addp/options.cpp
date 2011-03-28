@@ -5,6 +5,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
 
+#include "constants.h"
+
 namespace addp {
 
 options::options(int argc, char* argv[])
@@ -12,70 +14,42 @@ options::options(int argc, char* argv[])
     parse(argc, argv);
 }
 
-void options::parse(int argc, char* argv[])
-{
-    _progname = boost::filesystem::path(argv[0]).filename();
-    _usage = str(boost::format(
-                "Usage: %s [options]...\n"
-                "\n"
-                "options")
-            % _progname);
-
-    boost::program_options::options_description options = all_options();
-
-    boost::program_options::command_line_parser parser(argc, argv);
-    boost::program_options::store(parser.options(options).run(), _vm);
-    boost::program_options::notify(_vm);
-
-    if(_vm.count("help"))
-    {
-        std::cout << all_options() << std::endl;
-        std::exit(1);
-    }
-}
-
-std::string options::usage() const
-{
-    std::ostringstream os;
-    os << all_options();
-    return os.str();
-}
-
 boost::program_options::options_description options::all_options() const
 {
-    boost::program_options::options_description options = generic_options();
-    return options;
-}
+    boost::program_options::options_description opts = generic_options::all_options();
 
-boost::program_options::options_description options::generic_options() const
-{
-    boost::program_options::options_description options(_usage);
-    options.add_options()
-        ("help,h",
-            "produce help message")
-        ("version,V",
-            boost::program_options::value<bool>()->default_value(false)->zero_tokens(),
-            "program version")
-        ("verbose,v",
-            boost::program_options::value<int>()->default_value(0),
-            "verbosity level")
+    const std::string usage = "ADDP options";
+
+    boost::program_options::options_description addp_opts(usage);
+    addp_opts.add_options()
+        ("logfile,l",
+            boost::program_options::value<std::string>()->default_value("/dev/stdout"),
+            "logfile")
+        ("listen,L",
+            boost::program_options::value<std::string>()->default_value("0.0.0.0"),
+            "ip address to listen")
+        ("port,p",
+            boost::program_options::value<uint16_t>()->default_value(UDP_PORT),
+            "udp port")
         ;
-    return options;
+
+    opts.add(addp_opts);
+    return opts;
 }
 
-size_t options::count(const char* key) const
+std::string options::logfile() const
 {
-    return _vm.count(key);
+    return _vm["logfile"].as<std::string>();
 }
 
-bool options::version() const
+std::string options::listen() const
 {
-    return _vm["version"].as<bool>();
+    return _vm["listen"].as<std::string>();
 }
 
-int options::verbose() const
+uint16_t options::port() const
 {
-    return _vm["verbose"].as<int>();
+    return _vm["port"].as<uint16_t>();
 }
 
 } // namespace addp

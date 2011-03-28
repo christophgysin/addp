@@ -12,13 +12,10 @@ class options : public addp::options
 public:
     options(int argc, char* argv[]);
 
-    std::string logfile() const;
-
-    std::string host() const;
-    uint16_t port() const;
+    size_t threads() const;
 
 protected:
-    virtual boost::program_options::options_description all_options();
+    virtual boost::program_options::options_description all_options() const;
 };
 
 } // namespace addpd
