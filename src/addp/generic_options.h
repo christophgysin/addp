@@ -9,7 +9,7 @@ namespace addp {
 class generic_options
 {
 public:
-    generic_options(){}
+    generic_options();
     generic_options(int argc, char* argv[]);
 
     void usage() const;
@@ -25,10 +25,10 @@ protected:
     virtual boost::program_options::options_description visible_options() const;
 
     boost::program_options::variables_map _vm;
+    std::string _usage;
 
 private:
     std::string _progname;
-    std::string _usage;
 };
 
 } // namespace addp

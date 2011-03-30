@@ -6,6 +6,15 @@ namespace addpc {
 
 options::options(int argc, char* argv[])
 {
+    _usage = std::string() +
+        "Usage: %s [options...] <action> [args...]\n" +
+        "\n" +
+        " actions:\n" +
+        "  discover [device]\n" +
+        "  reboot <device> [passwd]\n" +
+        "  config <device> <ip> <netmask> <gateway> [passwd]\n" +
+        "  dhcp <device> <on|off> [passwd]\n";
+
     parse(argc, argv);
 }
 

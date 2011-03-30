@@ -7,7 +7,13 @@
 
 namespace addp {
 
-generic_options::generic_options(int argc, char* argv[])
+generic_options::generic_options() :
+    _usage("Usage: %s [options...]\n")
+{
+}
+
+generic_options::generic_options(int argc, char* argv[]) :
+    _usage("Usage: %s [options...]\n")
 {
     parse(argc, argv);
 }
@@ -15,11 +21,6 @@ generic_options::generic_options(int argc, char* argv[])
 void generic_options::parse(int argc, char* argv[])
 {
     _progname = boost::filesystem::path(argv[0]).filename();
-    _usage = str(boost::format(
-                "Usage: %s [options]...\n"
-                "\n"
-                "Generic options")
-            % _progname);
 
     boost::program_options::command_line_parser parser(argc, argv);
     boost::program_options::store(
@@ -39,12 +40,14 @@ void generic_options::parse(int argc, char* argv[])
 
 void generic_options::usage() const
 {
-    std::cout << visible_options();
+    std::cout
+        << str(boost::format(_usage) % _progname) << std::endl
+        << visible_options();
 }
 
 boost::program_options::options_description generic_options::all_options() const
 {
-    boost::program_options::options_description opts(_usage);
+    boost::program_options::options_description opts("Generic options");
     opts.add_options()
         ("help,h",
             "produce help message")
