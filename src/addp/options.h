@@ -1,6 +1,7 @@
 #ifndef ADDP_OPTIONS_H
 #define ADDP_OPTIONS_H
 
+#include <stdint.h>
 #include <string>
 #include <boost/program_options.hpp>
 
