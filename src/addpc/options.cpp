@@ -1,6 +1,7 @@
 #include "options.h"
 
 #include <iostream>
+#include <boost/lexical_cast.hpp>
 
 namespace addpc {
 
@@ -46,26 +47,37 @@ void options::parse(int argc, char* argv[])
         min = 0;
         max = 0;
     }
-    else if(action == "reboot")
-    {
-        min = 1;
-        max = 2;
-    }
-    else if(action == "config")
-    {
-        min = 4;
-        max = 5;
-    }
-    else if(action == "dhcp")
-    {
-        min = 2;
-        max = 3;
-    }
     else
     {
-        std::cerr << "Unknown action \"" << action << "\"" << std::endl;
-        usage();
-        std::exit(1);
+        // must have a specific device address for further actions
+        if(boost::lexical_cast<addp::mac_address>(mac()) == addp::MAC_ADDR_BROADCAST)
+        {
+            std::cerr << "Please select a device's mac address" << std::endl << std::endl;
+            usage();
+            std::exit(1);
+        }
+
+        if(action == "reboot")
+        {
+            min = 0;
+            max = 1;
+        }
+        else if(action == "config")
+        {
+            min = 3;
+            max = 4;
+        }
+        else if(action == "dhcp")
+        {
+            min = 1;
+            max = 2;
+        }
+        else
+        {
+            std::cerr << "Unknown action \"" << action << "\"" << std::endl << std::endl;
+            usage();
+            std::exit(1);
+        }
     }
 
     size_t count = args().size();
