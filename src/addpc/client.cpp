@@ -23,7 +23,7 @@ bool client::run()
 
     if(_options.action() == "discover")
         return discover();
-    if(_options.action() == "static")
+    if(_options.action() == "config")
         return static_net_config();
     if(_options.action() == "dhcp")
         return dhcp_net_config();
