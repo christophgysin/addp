@@ -22,6 +22,13 @@ void options::parse(int argc, char* argv[])
 {
     addp::options::parse(argc, argv);
 
+    if(_vm.count("action") == 0)
+    {
+        std::cerr << "No action given" << std::endl << std::endl;
+        usage();
+        std::exit(1);
+    }
+
     /*
      *  discover [device]
      *  reboot <device> [passwd]
@@ -99,8 +106,7 @@ boost::program_options::options_description options::addpc_hidden_options() cons
     boost::program_options::options_description hidden_opts;
     hidden_opts.add_options()
         ("action",
-            boost::program_options::value<std::string>()
-                ->default_value("discover"),
+            boost::program_options::value<std::string>(),
             "action (discover/static/reboot/dhcp)")
         ("mac",
             boost::program_options::value<std::string>()
