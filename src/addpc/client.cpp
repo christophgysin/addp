@@ -31,7 +31,7 @@ bool client::run()
         return reboot();
 
     std::cerr << "Unknown action: " << _options.action() << std::endl;
-    std::cout << std::endl << _options.usage();
+    _options.usage();
     return false;
 }
 

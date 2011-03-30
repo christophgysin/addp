@@ -7,10 +7,8 @@ options::options(int argc, char* argv[])
     parse(argc, argv);
 }
 
-boost::program_options::options_description options::all_options() const
+boost::program_options::options_description options::addpc_options() const
 {
-    boost::program_options::options_description opts = addp::options::all_options();
-
     const std::string usage = "ADDP client options";
 
     boost::program_options::options_description addpc_opts(usage);
@@ -24,19 +22,51 @@ boost::program_options::options_description options::all_options() const
         ("max_count,c",
             boost::program_options::value<ssize_t>()->default_value(addp::DEFAULT_MAX_COUNT),
             "stop after receiving n responses")
-        ("action,a",
+        ;
+    return addpc_opts;
+}
+
+boost::program_options::options_description options::addpc_hidden_options() const
+{
+    boost::program_options::options_description hidden_opts;
+    hidden_opts.add_options()
+        ("action",
             boost::program_options::value<std::string>()->default_value("discover"),
             "action (discover/static/reboot/dhcp)")
-        ("mac,M",
+        ("mac",
             boost::program_options::value<std::string>()->default_value("ff:ff:ff:ff:ff:ff"),
             "mac address of target device")
-        ("password,p",
-            boost::program_options::value<std::string>()->default_value(addp::DEFAULT_PASSWORD),
-            "device password")
-    ;
+        ("args",
+            boost::program_options::value<std::string>()->multitoken(),
+            "action arguments")
+        ;
+    return hidden_opts;
+}
 
-    opts.add(addpc_opts);
+boost::program_options::options_description options::visible_options() const
+{
+    boost::program_options::options_description opts = addp::options::all_options();
+    opts.add(addpc_options());
     return opts;
+}
+
+boost::program_options::options_description options::all_options() const
+{
+    boost::program_options::options_description opts = addp::options::all_options();
+    opts.add(addpc_options());
+    opts.add(addpc_hidden_options());
+    return opts;
+}
+
+boost::program_options::positional_options_description options::positional_options() const
+{
+    boost::program_options::positional_options_description positional = addp::options::positional_options();
+    positional
+        .add("action", 1)
+        .add("mac", 1)
+        .add("args", -1)
+        ;
+    return positional;
 }
 
 std::string options::multicast() const

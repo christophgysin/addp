@@ -25,6 +25,12 @@ public:
 
 protected:
     virtual boost::program_options::options_description all_options() const;
+    virtual boost::program_options::positional_options_description positional_options() const;
+    virtual boost::program_options::options_description visible_options() const;
+
+private:
+    boost::program_options::options_description addpc_options() const;
+    boost::program_options::options_description addpc_hidden_options() const;
 };
 
 } // namespace addpc

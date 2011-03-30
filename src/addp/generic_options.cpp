@@ -22,6 +22,7 @@ void generic_options::parse(int argc, char* argv[])
             % _progname);
 
     boost::program_options::options_description options = all_options();
+    boost::program_options::positional_options_description positional = positional_options();
 
     boost::program_options::command_line_parser parser(argc, argv);
     boost::program_options::store(parser.options(options).run(), _vm);
@@ -29,16 +30,14 @@ void generic_options::parse(int argc, char* argv[])
 
     if(_vm.count("help"))
     {
-        std::cout << all_options() << std::endl;
+        usage();
         std::exit(1);
     }
 }
 
-std::string generic_options::usage() const
+void generic_options::usage() const
 {
-    std::ostringstream os;
-    os << all_options();
-    return os.str();
+    std::cout << visible_options();
 }
 
 boost::program_options::options_description generic_options::all_options() const
@@ -55,6 +54,17 @@ boost::program_options::options_description generic_options::all_options() const
             "verbosity level")
         ;
     return opts;
+}
+
+boost::program_options::positional_options_description generic_options::positional_options() const
+{
+    boost::program_options::positional_options_description positional;
+    return positional;
+}
+
+boost::program_options::options_description generic_options::visible_options() const
+{
+    return all_options();
 }
 
 bool generic_options::version() const
