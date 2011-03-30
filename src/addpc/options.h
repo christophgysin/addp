@@ -14,8 +14,8 @@ public:
     options(int argc, char* argv[]);
 
     std::string multicast() const;
-    ssize_t timeout() const;
-    ssize_t max_count() const;
+    size_t timeout() const;
+    size_t max_count() const;
 
     std::string action() const;
     std::string mac() const;

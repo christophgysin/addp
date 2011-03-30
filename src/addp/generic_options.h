@@ -15,7 +15,7 @@ public:
     void usage() const;
 
     bool version() const;
-    int verbose() const;
+    size_t verbose() const;
 
 protected:
     void parse(int argc, char* argv[]);

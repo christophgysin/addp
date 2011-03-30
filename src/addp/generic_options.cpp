@@ -54,10 +54,11 @@ boost::program_options::options_description generic_options::all_options() const
                 ->zero_tokens(),
             "program version")
         ("verbose,v",
-            boost::program_options::value<int>()
+            boost::program_options::value<size_t>()
                 ->default_value(0)
-                ->implicit_value(1),
-            "verbosity level")
+                ->implicit_value(1)
+                ->zero_tokens(),
+            "verbose")
         ;
     return opts;
 }
@@ -78,9 +79,9 @@ bool generic_options::version() const
     return _vm["version"].as<bool>();
 }
 
-int generic_options::verbose() const
+size_t generic_options::verbose() const
 {
-    return _vm["verbose"].as<int>();
+    return _vm["verbose"].as<size_t>();
 }
 
 } // namespace addp

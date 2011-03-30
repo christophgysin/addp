@@ -20,10 +20,11 @@ action::action(const packet& request) :
     _socket(_io_service),
     _deadline(_socket.io_service()),
     _request(request),
+    _callback(boost::bind(&action::print_brief, this, _1, _2)),
     _count(0),
     _max_count(DEFAULT_MAX_COUNT),
     _timeout_ms(DEFAULT_TIMEOUT),
-    _verbose(false)
+    _verbose(0)
 {
     // disable timer by setting expiry time to infinity
     _deadline.expires_at(boost::posix_time::pos_infin);
@@ -47,19 +48,29 @@ void action::set_request(const packet& request)
     _request = request;
 }
 
-void action::set_timeout(ssize_t timeout_ms)
+void action::set_timeout(size_t timeout_ms)
 {
     _timeout_ms = timeout_ms;
 }
 
-void action::set_max_count(ssize_t max_count)
+void action::set_max_count(size_t max_count)
 {
     _max_count = max_count;
 }
 
-void action::set_verbose(bool verbose)
+void action::set_verbose(size_t verbose)
 {
     _verbose = verbose;
+
+    if(verbose)
+        set_callback(boost::bind(&action::print_verbose, this, _1, _2));
+    else
+        set_callback(boost::bind(&action::print_brief, this, _1, _2));
+}
+
+void action::set_callback(callback_t callback)
+{
+    _callback = callback;
 }
 
 bool action::run()
@@ -110,7 +121,7 @@ void action::check_timeout()
 {
     if(_deadline.expires_at() <= boost::asio::deadline_timer::traits_type::now())
     {
-        if(_verbose)
+        if(_verbose >= 2)
             std::cout << "timeout reached (" << std::dec << _timeout_ms << "ms)" << std::endl;
 
         stop();
@@ -141,8 +152,7 @@ void action::handle_receive_from(const boost::system::error_code& error, size_t 
         if(!response.parse_fields())
             std::cerr << "failed to parse fields!" << std::endl;
 
-        // TODO callback
-        std::cout << _sender_address << " " << response << std::endl;
+        _callback(_sender_address, response);
 
         ++_count;
     }
@@ -150,7 +160,7 @@ void action::handle_receive_from(const boost::system::error_code& error, size_t 
     // max count reached?
     if(_max_count && _count == _max_count)
     {
-        if(_verbose)
+        if(_verbose >= 2)
             std::cout << "max_count reached (" << std::dec << _max_count << ")" << std::endl;
 
         stop();
@@ -174,6 +184,16 @@ void action::handle_receive_from(const boost::system::error_code& error, size_t 
         boost::bind(&action::handle_receive_from, this,
             boost::asio::placeholders::error,
             boost::asio::placeholders::bytes_transferred));
+}
+
+void action::print_brief(const boost::asio::ip::udp::endpoint& sender, const packet&) const
+{
+    std::cout << sender.address() << std::endl;
+}
+
+void action::print_verbose(const boost::asio::ip::udp::endpoint& sender, const packet& pckt) const
+{
+    std::cout << sender << " " << pckt << std::endl;
 }
 
 } // namespace addp

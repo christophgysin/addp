@@ -36,7 +36,7 @@ bool client::run()
 
 bool client::run_action(addp::action& action)
 {
-    action.set_verbose(_options.verbose() > 0);
+    action.set_verbose(_options.verbose());
     action.set_dest_address(_options.multicast(), _options.port());
     action.set_timeout(_options.timeout());
     action.set_max_count(_options.max_count());

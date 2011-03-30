@@ -130,11 +130,11 @@ std::string field::value_str() const
             os << std::dec << value<uint32_t>();
             break;
 
-        case FT_NETWORK:
+        case FT_NAME:
         case FT_DOMAIN:
         case FT_FIRMWARE:
         case FT_RESULT_MSG:
-        case FT_DEVICE_NAME:
+        case FT_DEVICE:
             os << value<std::string>();
             break;
 
@@ -203,7 +203,7 @@ std::string field::field_type2str(field_type type)
         case FT_MAC_ADDR:       return "MAC address";
         case FT_IP_ADDR:        return "IP address";
         case FT_NETMASK:        return "Netmask";
-        case FT_NETWORK:        return "Network Name";
+        case FT_NAME:           return "Name";
         case FT_DOMAIN:         return "Domain";
         case FT_HW_TYPE:        return "Hardware type";
         case FT_HW_REV:         return "Hardware Revision";
@@ -212,7 +212,7 @@ std::string field::field_type2str(field_type type)
         case FT_RESULT_FLAG:    return "Result flag";
         case FT_GATEWAY:        return "Gateway IP";
         case FT_CONF_ERR_CODE:  return "Configuration error code";
-        case FT_DEVICE_NAME:    return "Device name";
+        case FT_DEVICE:         return "Device";
         case FT_PORT:           return "Port";
         case FT_DNS:            return "DNS IP";
         case FT_DCHP:           return "DHCP enabled";
