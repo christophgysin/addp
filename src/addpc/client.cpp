@@ -17,7 +17,7 @@ bool client::run()
 {
     if(_options.version())
     {
-        std::cout << ADDP_VERSION << std::endl;
+        std::cout << addp::VERSION << std::endl;
         return true;
     }
 
@@ -30,8 +30,7 @@ bool client::run()
     if(_options.action() == "reboot")
         return reboot();
 
-    std::cerr << "Unknown action: " << _options.action() << std::endl;
-    _options.usage();
+    // not reached
     return false;
 }
 
