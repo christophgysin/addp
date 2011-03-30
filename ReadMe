@@ -43,10 +43,19 @@ $ addpc discover -v 01:02:03:04:05:06
   Serial port count = 1
 
 $ addpc reboot 01:02:03:04:05:06
-OK
+Authentication Failure
+
+$ addpc reboot 01:02:03:04:05:06 wrong_pass
+Authentication Failure
+
+$ addpc reboot 01:02:03:04:05:06 secret_password
+Operation Successful
 
 $ addpc config 01:02:03:04:05:07 1.2.3.6 255.255.255.0 1.2.3.1
-OK
+Operation Successful
 
 $ addpc dhcp 01:02:03:04:05:07 on
-OK
+Operation Successful
+
+$ addpc dhcp 01:02:03:04:05:07 off
+Operation Successful
