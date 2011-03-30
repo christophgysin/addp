@@ -214,15 +214,15 @@ std::string options::gateway() const
 
 bool options::dhcp() const
 {
-    const std::string& dhcp = args()[0];
+    std::string value = args()[0];
 
-    if(dhcp == "on")
+    if(value == "on")
         return true;
 
-    if(dhcp == "off")
+    if(value == "off")
         return false;
 
-    std::cerr << "illegal value for dhcp: \"" << dhcp << "\"";
+    std::cerr << "illegal value for dhcp: \"" << value << "\"" << std::endl << std::endl;
     usage();
     std::exit(1);
 }

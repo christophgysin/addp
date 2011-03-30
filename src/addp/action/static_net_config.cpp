@@ -1,5 +1,7 @@
 #include "static_net_config.h"
 
+#include <iostream>
+#include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <addp/packet/static_net_config.h>
@@ -49,6 +51,16 @@ void static_net_config::set_password(const std::string& password)
 {
     _password = password;
     set_request(static_net_config_request(_mac_address, _ip, _subnet, _gateway, _password));
+}
+
+void static_net_config::print_brief(const boost::asio::ip::udp::endpoint& /*sender*/, const packet& response) const
+{
+    BOOST_FOREACH(const field& f, response.fields())
+        if(f.type() == field::FT_RESULT_MSG)
+        {
+            std::cout << f.value<std::string>() << std::endl;
+            break;
+        }
 }
 
 } // namespace addp

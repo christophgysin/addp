@@ -17,6 +17,9 @@ public:
     void set_enable(bool enable);
     void set_password(const std::string& password);
 
+protected:
+    void print_brief(const boost::asio::ip::udp::endpoint& sender, const packet& response) const;
+
 private:
     mac_address _mac_address;
     bool _enable;
