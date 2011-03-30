@@ -39,7 +39,6 @@ bool client::run_action(addp::action& action)
     action.set_verbose(_options.verbose());
     action.set_dest_address(_options.multicast(), _options.port());
     action.set_timeout(_options.timeout());
-    action.set_max_count(_options.max_count());
 
     return action.run();
 }
@@ -48,6 +47,7 @@ bool client::discover()
 {
     addp::discover action;
     action.set_listen_address(_options.listen(), _options.port());
+    action.set_max_count(_options.max_count());
     action.set_mac_address(_options.mac());
 
     return run_action(action);
