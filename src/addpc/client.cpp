@@ -57,10 +57,9 @@ bool client::discover()
 bool client::static_net_config()
 {
     addp::mac_address mac_address = boost::lexical_cast<addp::mac_address>(_options.mac());
-    // TODO: get options from arguments
-    addp::ip_address ip = boost::lexical_cast<addp::ip_address>("10.20.30.40");
-    addp::ip_address subnet = boost::lexical_cast<addp::ip_address>("255.0.0.0");
-    addp::ip_address gateway = boost::lexical_cast<addp::ip_address>("10.0.0.1");
+    addp::ip_address ip = boost::lexical_cast<addp::ip_address>(_options.ip());
+    addp::ip_address subnet = boost::lexical_cast<addp::ip_address>(_options.subnet());
+    addp::ip_address gateway = boost::lexical_cast<addp::ip_address>(_options.gateway());
     addp::static_net_config action(mac_address, ip, subnet, gateway);
     action.set_password(_options.password());
 
@@ -70,8 +69,7 @@ bool client::static_net_config()
 bool client::dhcp_net_config()
 {
     addp::mac_address mac_address = boost::lexical_cast<addp::mac_address>(_options.mac());
-    // TODO: get option from arguments
-    addp::dhcp_net_config action(mac_address, true);
+    addp::dhcp_net_config action(mac_address, _options.dhcp());
     action.set_password(_options.password());
 
     return run_action(action);

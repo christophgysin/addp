@@ -21,11 +21,13 @@ void generic_options::parse(int argc, char* argv[])
                 "Generic options")
             % _progname);
 
-    boost::program_options::options_description options = all_options();
-    boost::program_options::positional_options_description positional = positional_options();
-
     boost::program_options::command_line_parser parser(argc, argv);
-    boost::program_options::store(parser.options(options).run(), _vm);
+    boost::program_options::store(
+            parser
+                .options(all_options())
+                .positional(positional_options())
+                .run(),
+            _vm);
     boost::program_options::notify(_vm);
 
     if(_vm.count("help"))
@@ -47,10 +49,14 @@ boost::program_options::options_description generic_options::all_options() const
         ("help,h",
             "produce help message")
         ("version,V",
-            boost::program_options::value<bool>()->default_value(false)->zero_tokens(),
+            boost::program_options::value<bool>()
+                ->default_value(false)
+                ->zero_tokens(),
             "program version")
         ("verbose,v",
-            boost::program_options::value<int>()->default_value(0),
+            boost::program_options::value<int>()
+                ->default_value(0)
+                ->implicit_value(1),
             "verbosity level")
         ;
     return opts;

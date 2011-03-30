@@ -18,13 +18,16 @@ boost::program_options::options_description options::all_options() const
     boost::program_options::options_description addp_opts(usage);
     addp_opts.add_options()
         ("logfile,l",
-            boost::program_options::value<std::string>()->default_value("/dev/stdout"),
+            boost::program_options::value<std::string>()
+                ->default_value("/dev/stdout"),
             "logfile")
         ("listen,L",
-            boost::program_options::value<std::string>()->default_value("0.0.0.0"),
+            boost::program_options::value<std::string>()
+                ->default_value("0.0.0.0"),
             "ip address to listen")
         ("port,p",
-            boost::program_options::value<uint16_t>()->default_value(UDP_PORT),
+            boost::program_options::value<uint16_t>()
+                ->default_value(UDP_PORT),
             "udp port")
         ;
 

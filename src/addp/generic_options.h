@@ -12,13 +12,14 @@ public:
     generic_options(){}
     generic_options(int argc, char* argv[]);
 
-    void parse(int argc, char* argv[]);
     void usage() const;
 
     bool version() const;
     int verbose() const;
 
 protected:
+    void parse(int argc, char* argv[]);
+
     virtual boost::program_options::options_description all_options() const;
     virtual boost::program_options::positional_options_description positional_options() const;
     virtual boost::program_options::options_description visible_options() const;

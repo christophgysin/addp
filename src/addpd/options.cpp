@@ -16,7 +16,8 @@ boost::program_options::options_description options::all_options() const
     boost::program_options::options_description addpd_opts(usage);
     addpd_opts.add_options()
         ("threads,t",
-            boost::program_options::value<size_t>()->default_value(2),
+            boost::program_options::value<size_t>()
+                ->default_value(2),
             "number of threads to handle requests")
     ;
 
