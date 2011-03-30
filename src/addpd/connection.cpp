@@ -19,11 +19,19 @@ bool connection::create_response(const addp::packet& request)
 {
     switch(request.type())
     {
+        case addp::packet::PT_DISCOVERY_REQUEST:
+        case addp::packet::PT_STATIC_NET_CONFIG_REQUEST:
+        case addp::packet::PT_REBOOT_REQUEST:
+        case addp::packet::PT_DHCP_NET_CONFIG_REQUEST:
+            std::cout << request << std::endl;
+            break;
+
         default:
             std::cerr << "got unknown request (" << int(request.type()) << ")" <<
                 ", ignoring" << std::endl;
             return false;
     }
+    return true;
 }
 
 void connection::handle_request(const addp::packet& request)
@@ -42,12 +50,12 @@ void connection::handle_send_to(const boost::system::error_code& error, size_t b
 {
     if(error || bytes_sent != _data_bytes)
         std::cerr << str(
-                boost::format("error while sending response: %s (%d) sent %d of %d bytes")
-                    % error.message()
-                    % error.value()
-                    % bytes_sent
-                    % _data_bytes
-                ) << std::endl;
+            boost::format("error while sending response: %s (%d) sent %d of %d bytes")
+                % error.message()
+                % error.value()
+                % bytes_sent
+                % _data_bytes
+            ) << std::endl;
 
     delete this;
 }

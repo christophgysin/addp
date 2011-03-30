@@ -43,8 +43,11 @@ void server::stop()
 
 void server::handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd)
 {
-    if (!error && bytes_recvd > 0)
+    if(!error && bytes_recvd > 0)
         new connection(_socket, _sender_address, addp::packet(_data.data(), bytes_recvd));
+    else
+        std::cerr << "error: " << error.message() << " (" << error.value() << ") "
+            << "bytes_recvd: " << bytes_recvd << std::endl;
 
     _socket.async_receive_from(
         boost::asio::buffer(_data), _sender_address,
