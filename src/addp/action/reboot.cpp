@@ -1,5 +1,8 @@
 #include "reboot.h"
 
+#include <iostream>
+#include <boost/foreach.hpp>
+#include <boost/format.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <addp/packet/reboot.h>
@@ -26,6 +29,28 @@ void reboot::set_password(const std::string& password)
 {
     _password = password;
     set_request(reboot_request(_mac_address, _password));
+}
+
+void reboot::print_brief(const boost::asio::ip::udp::endpoint& /*sender*/, const packet& response) const
+{
+    std::string msg;
+
+    BOOST_FOREACH(const field& f, response.fields())
+    {
+        switch(f.type())
+        {
+            case field::FT_RESULT_MSG:
+                msg = f.value_str();
+                break;
+            default:
+                break;
+        }
+    }
+
+    std::cout << str(
+        boost::format("%s")
+            % msg
+        ) << std::endl;
 }
 
 } // namespace addp

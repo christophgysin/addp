@@ -15,6 +15,9 @@ public:
     void set_mac_address(const std::string& mac);
     void set_password(const std::string& password);
 
+protected:
+    void print_brief(const boost::asio::ip::udp::endpoint& sender, const packet& response) const;
+
 private:
     mac_address _mac_address;
     std::string _password;

@@ -186,7 +186,7 @@ void action::handle_receive_from(const boost::system::error_code& error, size_t 
             boost::asio::placeholders::bytes_transferred));
 }
 
-void action::print_brief(const boost::asio::ip::udp::endpoint& sender, const packet&) const
+void action::print_brief(const boost::asio::ip::udp::endpoint& sender, const packet& /*pckt*/) const
 {
     std::cout << sender.address() << std::endl;
 }
