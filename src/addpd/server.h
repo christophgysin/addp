@@ -6,11 +6,13 @@
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/udp.hpp>
 #include <boost/system/system_error.hpp>
+#include <addp/addp.h>
 
 class server
 {
 public:
-    server(const std::string& listen_ip, uint16_t port);
+    server(uint16_t port = addp::UDP_PORT,
+            const std::string& mcast_ip = addp::MCAST_IP_ADDRESS);
 
     void run();
     void stop();

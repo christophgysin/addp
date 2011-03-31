@@ -3,18 +3,25 @@
 #include <iostream>
 #include <boost/asio/buffer.hpp>
 #include <boost/asio/placeholders.hpp>
+#include <boost/asio/ip/multicast.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "connection.h"
 
-server::server(const std::string& listen_ip, uint16_t port) :
+server::server(uint16_t port, const std::string& mcast_ip) :
     _io_service(),
-    _listen_address(boost::asio::ip::address::from_string(listen_ip), port),
+    _listen_address(boost::asio::ip::udp::v4(), port),
     _socket(_io_service, _listen_address),
     _thread_count(4)
 {
+    _socket.set_option(
+            boost::asio::ip::multicast::join_group(
+                boost::asio::ip::address::from_string(mcast_ip)
+            )
+        );
+
     _socket.async_receive_from(
         boost::asio::buffer(_data), _sender_address,
         boost::bind(&server::handle_receive_from, this,

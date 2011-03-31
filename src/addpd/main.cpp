@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
     addpd::options options(argc, argv);
 
     // create server
-    server s(options.listen(), options.port());
+    server s(options.port(), options.multicast());
 
     // run server in background thread
     sigset_t sigmask = block_signals();
