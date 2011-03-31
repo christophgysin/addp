@@ -17,14 +17,10 @@ boost::program_options::options_description options::all_options() const
 
     boost::program_options::options_description addp_opts(usage);
     addp_opts.add_options()
-        ("logfile,l",
+        ("multicast,m",
             boost::program_options::value<std::string>()
-                ->default_value("/dev/stdout"),
-            "logfile")
-        ("listen,L",
-            boost::program_options::value<std::string>()
-                ->default_value("0.0.0.0"),
-            "ip address to listen")
+                ->default_value(addp::MCAST_IP_ADDRESS),
+            "multicast address for discovery")
         ("port,p",
             boost::program_options::value<uint16_t>()
                 ->default_value(UDP_PORT),
@@ -35,14 +31,9 @@ boost::program_options::options_description options::all_options() const
     return opts;
 }
 
-std::string options::logfile() const
+std::string options::multicast() const
 {
-    return _vm["logfile"].as<std::string>();
-}
-
-std::string options::listen() const
-{
-    return _vm["listen"].as<std::string>();
+    return _vm["multicast"].as<std::string>();
 }
 
 uint16_t options::port() const

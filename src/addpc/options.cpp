@@ -97,10 +97,10 @@ boost::program_options::options_description options::addpc_options() const
 
     boost::program_options::options_description addpc_opts(usage);
     addpc_opts.add_options()
-        ("multicast,m",
+        ("listen,L",
             boost::program_options::value<std::string>()
-                ->default_value(addp::MCAST_IP_ADDRESS),
-            "multicast address for discovery")
+                ->default_value("0.0.0.0"),
+            "ip address to listen")
         ("timeout,t",
             boost::program_options::value<size_t>()
                 ->default_value(addp::DEFAULT_TIMEOUT),
@@ -159,9 +159,9 @@ boost::program_options::positional_options_description options::positional_optio
     return positional;
 }
 
-std::string options::multicast() const
+std::string options::listen() const
 {
-    return _vm["multicast"].as<std::string>();
+    return _vm["listen"].as<std::string>();
 }
 
 size_t options::timeout() const

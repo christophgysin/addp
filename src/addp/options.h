@@ -15,9 +15,7 @@ public:
     options(){}
     options(int argc, char* argv[]);
 
-    std::string logfile() const;
-
-    std::string listen() const;
+    std::string multicast() const;
     uint16_t port() const;
 
 protected:

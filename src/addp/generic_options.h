@@ -16,6 +16,7 @@ public:
 
     bool version() const;
     size_t verbose() const;
+    std::string logfile() const;
 
 protected:
     void parse(int argc, char* argv[]);

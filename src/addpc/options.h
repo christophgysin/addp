@@ -13,7 +13,7 @@ class options : public addp::options
 public:
     options(int argc, char* argv[]);
 
-    std::string multicast() const;
+    std::string listen() const;
     size_t timeout() const;
     size_t max_count() const;
 

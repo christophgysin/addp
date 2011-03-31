@@ -62,6 +62,10 @@ boost::program_options::options_description generic_options::all_options() const
                 ->implicit_value(1)
                 ->zero_tokens(),
             "verbose")
+        ("logfile,l",
+            boost::program_options::value<std::string>()
+                ->default_value("/dev/stdout"),
+            "logfile")
         ;
     return opts;
 }
@@ -85,6 +89,11 @@ bool generic_options::version() const
 size_t generic_options::verbose() const
 {
     return _vm["verbose"].as<size_t>();
+}
+
+std::string generic_options::logfile() const
+{
+    return _vm["logfile"].as<std::string>();
 }
 
 } // namespace addp
