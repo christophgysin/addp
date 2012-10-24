@@ -18,7 +18,7 @@ action::action(const packet& request) :
     _sender_address(),
     _io_service(),
     _socket(_io_service),
-    _deadline(_socket.io_service()),
+    _deadline(_socket.get_io_service()),
     _request(request),
     _callback(boost::bind(&action::print_brief, this, _1, _2)),
     _count(0),

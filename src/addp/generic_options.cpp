@@ -20,7 +20,7 @@ generic_options::generic_options(int argc, char* argv[]) :
 
 void generic_options::parse(int argc, char* argv[])
 {
-    _progname = boost::filesystem::path(argv[0]).filename();
+    _progname = boost::filesystem::path(argv[0]).filename().string();
 
     boost::program_options::command_line_parser parser(argc, argv);
     boost::program_options::store(

@@ -1,2 +1,2 @@
 include(FindBoost)
-find_package(Boost REQUIRED system program_options thread)
+find_package(Boost REQUIRED system filesystem program_options thread)
