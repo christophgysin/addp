@@ -5,3 +5,4 @@ target_link_libraries(${BIN} addp
     ${Boost_THREAD_LIBRARY}
     )
 install(TARGETS ${BIN} DESTINATION bin)
+cotire(${BIN})
